@@ -23,3 +23,6 @@ export {
 export type { WandFailure, WandResult, WandSuccess } from './core/result.js';
 export type { InferInput, InferOutput, Spell } from './core/spell.js';
 export type { StepKind } from './core/step-kind.js';
+export type { OmitAtPath } from './types/path-omit.js';
+export type { PathDepth, PathOf, PathValue } from './types/path.js';
+export type { AddAtPath, ReplaceAtPath, RequireAtPath } from './types/path-write.js';
