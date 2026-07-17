@@ -21,4 +21,5 @@ export {
     type PathSegment,
 } from './core/path.js';
 export type { WandFailure, WandResult, WandSuccess } from './core/result.js';
+export type { InferInput, InferOutput, Spell } from './core/spell.js';
 export type { StepKind } from './core/step-kind.js';
