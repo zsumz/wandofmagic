@@ -27,6 +27,23 @@
         "types": "./dist/index.d.cts",
         "default": "./dist/index.cjs"
       }
+    },
+    "./coerce": {
+      "import": {
+        "types": "./dist/coerce.d.ts",
+        "default": "./dist/coerce.js"
+      },
+      "require": {
+        "types": "./dist/coerce.d.cts",
+        "default": "./dist/coerce.cjs"
+      }
+    }
+  },
+  "typesVersions": {
+    "*": {
+      "coerce": [
+        "dist/coerce.d.ts"
+      ]
     }
   },
   "files": [
