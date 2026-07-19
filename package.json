@@ -76,7 +76,10 @@
     "format": "npm run lint:fix",
     "architecture:check": "node scripts/check-architecture.mjs",
     "typecheck": "tsc -p tsconfig.json",
-    "check": "npm run build && eslint . && npm run architecture:check && tsc -p tsconfig.json",
+    "test": "npm run build && vitest run",
+    "test:watch": "vitest",
+    "coverage": "npm run build && vitest run --coverage",
+    "check": "npm run build && eslint . && npm run architecture:check && tsc -p tsconfig.json && vitest run",
     "validate": "npm run check",
     "prepack": "npm run build"
   },
