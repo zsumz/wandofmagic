@@ -1,0 +1,105 @@
+import type {
+    MissingPolicy,
+    MoveConflictPolicy,
+    MoveOptions,
+    StepOptions,
+} from '../core/options.js';
+import type { PathInput } from '../core/path.js';
+import { invokeBuilderOmit } from '../internal/type-boundary.js';
+import type { SynchronousCallbackValue } from '../types/callback.js';
+import type {
+    BuilderDeriveDependencies, BuilderDeriveKey, BuilderDeriveOutput,
+    BuilderDeriveValues, BuilderOmitKeys, BuilderOmitOutput, BuilderOutput, BuilderRenameInput,
+    BuilderRenameMapping, BuilderRenameOutput, BuilderTrimKey,
+} from '../types/builder-output.js';
+import type { PathTypeOperation } from '../types/path-program-operation.js';
+import type {
+    BuilderPathOmitInput,
+    BuilderPathOmitPaths,
+    BuilderPathOmitProgram,
+    BuilderMoveProgram,
+    BuilderMoveSourceInput,
+} from '../types/path-builder-output.js';
+import type { SafePathInput } from '../types/path-input.js';
+import { PathWandBuilder } from './path-wand-builder.js';
+import type { SpellBuilder } from './spell-builder.js';
+
+/** A one-off wand backed by the same reusable spell builder. */
+export class WandBuilder<
+    Input extends object,
+    Current extends object,
+    Program extends readonly PathTypeOperation[] = readonly [],
+> extends PathWandBuilder<Input, Current, Program> {
+    public rename<
+        const Mapping extends BuilderRenameMapping<BuilderOutput<Current, Program>>,
+    >(
+        mapping: BuilderRenameInput<BuilderOutput<Current, Program>, Mapping>,
+        options: StepOptions = {},
+    ): WandBuilder<Input, BuilderRenameOutput<BuilderOutput<Current, Program>, Mapping>> {
+        return this.rebuild(this.builder.rename<Mapping>(mapping, options));
+    }
+
+    public trim(
+        keys: ReadonlyArray<BuilderTrimKey<BuilderOutput<Current, Program>>>,
+        options: StepOptions = {},
+    ): WandBuilder<Input, BuilderOutput<Current, Program>> {
+        return this.rebuild(this.builder.trim(keys, options));
+    }
+
+    public derive<
+        const Key extends string,
+        const Dependencies extends BuilderDeriveDependencies<BuilderOutput<Current, Program>>,
+        Output,
+    >(
+        key: BuilderDeriveKey<BuilderOutput<Current, Program>, Key>,
+        dependencies: Dependencies,
+        derive: (values: BuilderDeriveValues<BuilderOutput<Current, Program>, Dependencies>) =>
+        SynchronousCallbackValue<Output>,
+        options: StepOptions = {},
+    ): WandBuilder<Input, BuilderDeriveOutput<BuilderOutput<Current, Program>, Key, Output>> {
+        return new WandBuilder(
+            this.input,
+            this.builder.derive<Key, Dependencies, Output>(key, dependencies, derive, options),
+        );
+    }
+
+    public move<
+        const Source extends PathInput,
+        const Destination extends PathInput,
+        const Missing extends MissingPolicy = 'error',
+        const Conflict extends MoveConflictPolicy = 'error',
+    >(
+        source: BuilderMoveSourceInput<Current, Program, Source>,
+        destination: Destination & SafePathInput<NoInfer<Destination>>,
+        options: MoveOptions<Missing, Conflict> = {},
+    ): WandBuilder<Input, Current, BuilderMoveProgram<
+        Current, Program, Source, Destination, Missing, Conflict
+    >> {
+        return this.rebuild(this.builder.move<Source, Destination, Missing, Conflict>(
+            source,
+            destination,
+            options,
+        ));
+    }
+
+    public omit<const Paths extends BuilderPathOmitPaths>(
+        paths: Paths & BuilderPathOmitInput<NoInfer<Paths>>,
+        options?: StepOptions,
+    ): WandBuilder<Input, Current, BuilderPathOmitProgram<Program, Paths>>;
+    public omit<const Keys extends BuilderOmitKeys<BuilderOutput<Current, Program>>>(
+        keys: Keys,
+        options?: StepOptions,
+    ): WandBuilder<Input, BuilderOmitOutput<BuilderOutput<Current, Program>, Keys>>;
+    public omit(paths: readonly PathInput[], options: StepOptions = {}): unknown {
+        const next = invokeBuilderOmit<SpellBuilder<
+            Input, object, readonly PathTypeOperation[]
+        >>(this.builder, paths, options);
+        return this.rebuild<object, readonly PathTypeOperation[]>(next);
+    }
+
+    protected rebuild<Next extends object, NextProgram extends readonly PathTypeOperation[]>(
+        builder: SpellBuilder<Input, Next, NextProgram>,
+    ): WandBuilder<Input, Next, NextProgram> {
+        return new WandBuilder(this.input, builder);
+    }
+}
