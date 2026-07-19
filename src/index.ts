@@ -1,3 +1,5 @@
+export { spell } from './builder/spell.js';
+export type { SpellBuilder } from './builder/spell-builder.js';
 export type { WandChange } from './core/change.js';
 export type { SpellDescription, StepDescription } from './core/description.js';
 export { PlanError, type PlanErrorCode, WandError } from './core/errors.js';
