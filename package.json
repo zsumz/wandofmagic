@@ -37,12 +37,25 @@
         "types": "./dist/coerce.d.cts",
         "default": "./dist/coerce.cjs"
       }
+    },
+    "./compiler": {
+      "import": {
+        "types": "./dist/compiler.d.ts",
+        "default": "./dist/compiler.js"
+      },
+      "require": {
+        "types": "./dist/compiler.d.cts",
+        "default": "./dist/compiler.cjs"
+      }
     }
   },
   "typesVersions": {
     "*": {
       "coerce": [
         "dist/coerce.d.ts"
+      ],
+      "compiler": [
+        "dist/compiler.d.ts"
       ]
     }
   },

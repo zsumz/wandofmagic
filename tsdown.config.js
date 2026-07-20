@@ -3,6 +3,7 @@ import { defineConfig } from 'tsdown';
 export default defineConfig({
     entry: {
         coerce: 'src/coerce/index.ts',
+        compiler: 'src/compiler/index.ts',
         index: 'src/index.ts',
     },
     format: ['esm', 'cjs'],
