@@ -1,0 +1,22 @@
+{
+  "extends": "./tsconfig.build.json",
+  "compilerOptions": {
+    "noEmit": true,
+    "rootDir": ".",
+    "baseUrl": ".",
+    "paths": {
+      "wandofmagic": [
+        "./src/index.ts"
+      ],
+      "wandofmagic/coerce": [
+        "./src/coerce/index.ts"
+      ],
+      "wandofmagic/compiler": [
+        "./src/compiler/index.ts"
+      ]
+    }
+  },
+  "include": [
+    "test/types/**/*.ts"
+  ]
+}
