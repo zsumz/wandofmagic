@@ -84,6 +84,7 @@
   "scripts": {
     "clean": "node scripts/clean.mjs",
     "build": "tsdown",
+    "benchmark:flat": "npm run build && node scripts/benchmark-flat.mjs",
     "lint": "npm run build && eslint .",
     "lint:fix": "npm run build && eslint . --fix",
     "format": "npm run lint:fix",
