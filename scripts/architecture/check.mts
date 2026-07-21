@@ -19,11 +19,8 @@ const testRoot = path.join(root, 'test');
 const executableRoots = [path.join(root, 'scripts'), path.join(root, 'smoke')];
 const inspectedRoots = [sourceRoot, testRoot, ...executableRoots];
 const migrationJavaScriptModules = new Set([
-    'scripts/benchmark-flat.mjs',
-    'scripts/benchmark-types.mjs',
     'scripts/check-publish.mjs',
     'scripts/clean.mjs',
-    'scripts/flat-benchmark-mappers.mjs',
     'smoke/package.smoke.mjs',
 ]);
 const failures: string[] = [];
