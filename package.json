@@ -95,10 +95,15 @@
     "test": "npm run build && vitest run",
     "test:watch": "vitest",
     "coverage": "npm run build && vitest run --coverage",
+    "smoke:list": "smoque list smoke/",
+    "smoke": "smoque run smoke/ --ci",
     "check:code": "npm run build && eslint . && npm run architecture:check && tsc -p tsconfig.json && tsc -p tsconfig.types.json && npm run benchmark:types && vitest run --coverage",
-    "check": "npm run check:code",
+    "check:package": "smoque list smoke/ && smoque run smoke/ --ci && npm pack --dry-run --json --ignore-scripts",
+    "check": "npm run check:code && npm run check:package",
     "validate": "npm run check",
-    "prepack": "npm run build"
+    "prepack": "npm run build",
+    "prepublishOnly": "node scripts/check-publish.mjs",
+    "publish:alpha": "npm publish --tag alpha --access public"
   },
   "devDependencies": {
     "@types/node": "^26.1.0",
