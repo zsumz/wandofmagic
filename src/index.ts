@@ -1,7 +1,7 @@
-export { spell } from './builder/spell.js';
-export type { SpellBuilder } from './builder/spell-builder.js';
-export { wand } from './builder/wand.js';
-export type { WandBuilder } from './builder/wand-builder.js';
+export { spell } from './builder/spell/spell.js';
+export type { SpellBuilder } from './builder/spell/spell-builder.js';
+export { wand } from './builder/wand/wand.js';
+export type { WandBuilder } from './builder/wand/wand-builder.js';
 export type { WandChange } from './core/change.js';
 export type { SpellDescription, StepDescription } from './core/description.js';
 export { PlanError, type PlanErrorCode, WandError } from './core/errors.js';

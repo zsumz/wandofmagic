@@ -1,2 +1,1 @@
-/** Internal representation of a snapshotted JSON-like record. */
-export type DataRecord = Record<string, unknown>;
+export type { DataRecord } from './execution/data-record.js';

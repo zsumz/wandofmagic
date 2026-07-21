@@ -3,5 +3,5 @@ export type {
     MapperBindingDescription,
     MapperBindingKind,
     TrustedMapperModule,
-} from './emitted-mapper.js';
-export { emitTrustedMapperModule } from './emit-trusted-mapper.js';
+} from './trusted-mapper/emitted-mapper.js';
+export { emitTrustedMapperModule } from './trusted-mapper/emit-trusted-mapper.js';
