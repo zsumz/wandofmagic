@@ -1,6 +1,9 @@
 import { defineConfig } from 'vitest/config';
 
 const migrationShadowModules = [
+    'src/builder/spell/**/*.ts',
+    'src/builder/state/**/*.ts',
+    'src/builder/wand/**/*.ts',
     'src/coerce/builtin/**/*.ts',
     'src/core/change/**/*.ts',
     'src/core/execution/**/*.ts',
