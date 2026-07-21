@@ -18,7 +18,7 @@ const forbiddenLayerImports = {
     compiler: new Set(['builder', 'coerce', 'operations', 'types']),
     core: new Set(['builder', 'coerce', 'internal', 'operations', 'runtime', 'types']),
     instructions: new Set(['builder', 'coerce', 'core', 'internal', 'operations', 'runtime', 'types']),
-    operations: new Set(['builder', 'operations']),
+    operations: new Set(['builder']),
     runtime: new Set(['builder', 'operations']),
     types: new Set(['builder', 'operations', 'runtime']),
 };

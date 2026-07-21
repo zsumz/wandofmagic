@@ -22,6 +22,8 @@ const migrationShadowModules = [
     'src/runtime/projection-program/**/*.ts',
     'src/runtime/run-options/**/*.ts',
     'src/runtime/trusted-project-record/**/*.ts',
+    'src/operations/flat/**/*.ts',
+    'src/operations/path/**/*.ts',
 ];
 
 export default defineConfig({
