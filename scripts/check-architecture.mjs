@@ -65,6 +65,12 @@ function report(file, node, sourceFile, message) {
     failures.push(`${relative(file)}:${start.line + 1}:${start.character + 1} ${message}`);
 }
 
+function isTypeBoundary(file) {
+    const rel = relative(file);
+    return rel === 'src/internal/type-boundary.ts' ||
+        rel.startsWith('src/internal/type-boundary/');
+}
+
 function inspectSyntax(file, sourceFile) {
     const layer = sourceLayer(file);
 
@@ -91,14 +97,14 @@ function inspectSyntax(file, sourceFile) {
 
         if (
             (ts.isAsExpression(node) || ts.isTypeAssertionExpression(node)) &&
-            relative(file) !== 'src/internal/type-boundary.ts' &&
+            !isTypeBoundary(file) &&
             node.type.getText(sourceFile) !== 'const'
         ) {
             report(
                 file,
                 node,
                 sourceFile,
-                'Type assertions belong in src/internal/type-boundary.ts unless an ADR documents an exception.',
+                'Type assertions belong in src/internal/type-boundary unless an ADR documents an exception.',
             );
         }
 

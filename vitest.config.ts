@@ -10,6 +10,18 @@ const migrationShadowModules = [
     'src/instructions/coercer/**/*.ts',
     'src/instructions/flat/**/*.ts',
     'src/instructions/path/**/*.ts',
+    'src/internal/type-boundary/**/*.ts',
+    'src/runtime/clone-path-container/**/*.ts',
+    'src/runtime/compiled-spell/**/*.ts',
+    'src/runtime/data-record/**/*.ts',
+    'src/runtime/execute-plan/**/*.ts',
+    'src/runtime/path-container/**/*.ts',
+    'src/runtime/path-mutation/**/*.ts',
+    'src/runtime/path/**/*.ts',
+    'src/runtime/project-record/**/*.ts',
+    'src/runtime/projection-program/**/*.ts',
+    'src/runtime/run-options/**/*.ts',
+    'src/runtime/trusted-project-record/**/*.ts',
 ];
 
 export default defineConfig({
