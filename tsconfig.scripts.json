@@ -1,0 +1,17 @@
+{
+  "extends": "./tsconfig.build.json",
+  "compilerOptions": {
+    "allowImportingTsExtensions": true,
+    "declaration": false,
+    "noEmit": true,
+    "rootDir": ".",
+    "types": ["node"]
+  },
+  "include": [
+    "scripts/**/*.mts",
+    "smoke/**/*.mts",
+    "eslint.config.mts",
+    "tsdown.config.mts",
+    "vitest.config.mts"
+  ]
+}

@@ -1,4 +1,16 @@
 import { defineConfig } from 'vitest/config';
+import {
+    allowedSourceIndexes,
+} from './scripts/architecture/entrypoint/allowed-source-indexes.mts';
+import { facadeDirectories } from './scripts/architecture/module/source-facades.mts';
+
+const facadeCoverageExclusions = [...facadeDirectories].map(
+    (directory) => `${directory}/*.ts`,
+);
+const coverageExclusions = [...new Set([
+    ...allowedSourceIndexes,
+    ...facadeCoverageExclusions,
+])];
 
 export default defineConfig({
     test: {
@@ -6,7 +18,7 @@ export default defineConfig({
         coverage: {
             provider: 'v8',
             include: ['src/**/*.ts'],
-            exclude: ['src/index.ts', 'src/coerce/index.ts'],
+            exclude: coverageExclusions,
             reporter: ['text', 'json-summary', 'html'],
             reportsDirectory: 'coverage',
             thresholds: {
