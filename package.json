@@ -95,7 +95,8 @@
     "test": "npm run build && vitest run",
     "test:watch": "vitest",
     "coverage": "npm run build && vitest run --coverage",
-    "check": "npm run build && eslint . && npm run architecture:check && tsc -p tsconfig.json && tsc -p tsconfig.types.json && npm run benchmark:types && vitest run",
+    "check:code": "npm run build && eslint . && npm run architecture:check && tsc -p tsconfig.json && tsc -p tsconfig.types.json && npm run benchmark:types && vitest run --coverage",
+    "check": "npm run check:code",
     "validate": "npm run check",
     "prepack": "npm run build"
   },
