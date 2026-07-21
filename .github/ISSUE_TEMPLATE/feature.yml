@@ -1,0 +1,31 @@
+name: Feature proposal
+description: Propose a use case or public API change.
+title: "proposal: "
+labels: ["kind:feature"]
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem
+      description: Describe the recurring data-boundary problem before proposing syntax.
+    validations:
+      required: true
+  - type: textarea
+    id: examples
+    attributes:
+      label: Real examples
+      description: Show representative input, desired output, failure semantics, and receipt needs.
+    validations:
+      required: true
+  - type: textarea
+    id: semantics
+    attributes:
+      label: Missing, conflict, and type semantics
+      description: Explain absent, undefined, null, destination-conflict, and output-type behavior.
+    validations:
+      required: true
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives
+      description: Explain why composition, transform, derive, coercers, or Standard Schema are insufficient.
