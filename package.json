@@ -82,7 +82,7 @@
     "provenance": true
   },
   "scripts": {
-    "clean": "node scripts/clean.mjs",
+    "clean": "node scripts/maintenance/clean.mts",
     "build": "tsdown",
     "benchmark:flat": "npm run build && node scripts/benchmarks/flat/benchmark-flat.mts",
     "benchmark:types": "node scripts/benchmarks/types/benchmark-types.mts",
