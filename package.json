@@ -85,6 +85,7 @@
     "clean": "node scripts/clean.mjs",
     "build": "tsdown",
     "benchmark:flat": "npm run build && node scripts/benchmark-flat.mjs",
+    "benchmark:types": "node scripts/benchmark-types.mjs",
     "lint": "npm run build && eslint .",
     "lint:fix": "npm run build && eslint . --fix",
     "format": "npm run lint:fix",
@@ -94,7 +95,7 @@
     "test": "npm run build && vitest run",
     "test:watch": "vitest",
     "coverage": "npm run build && vitest run --coverage",
-    "check": "npm run build && eslint . && npm run architecture:check && tsc -p tsconfig.json && tsc -p tsconfig.types.json && vitest run",
+    "check": "npm run build && eslint . && npm run architecture:check && tsc -p tsconfig.json && tsc -p tsconfig.types.json && npm run benchmark:types && vitest run",
     "validate": "npm run check",
     "prepack": "npm run build"
   },
