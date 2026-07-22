@@ -48,11 +48,16 @@ export function emitMove(instruction: MoveInstruction, operationIndex: number): 
         }
         lines.push('            } else {');
     }
-    lines.push(`                const ${written} = $setPath($value, ${destination}, ${sourceRead}.value);`);
+    lines.push(`                const ${written} = $setPath(`);
+    lines.push(`                    $value, ${destination}, ${sourceRead}.value, $ownership,`);
+    lines.push('                );');
     lines.push(`                if (!${written}.ok) {`);
     lines.push(`                    $failIssue($WandError, ${written}.issue, ${step.id}, "move");`);
     lines.push('                }');
-    lines.push(`                const ${deleted} = $deletePath(${written}.value, ${source});`);
+    lines.push(
+        `                const ${deleted} = $deletePath(`
+        + `${written}.value, ${source}, $ownership);`,
+    );
     lines.push(`                if (!${deleted}.ok) {`);
     lines.push(`                    $failIssue($WandError, ${deleted}.issue, ${step.id}, "move");`);
     lines.push('                }');

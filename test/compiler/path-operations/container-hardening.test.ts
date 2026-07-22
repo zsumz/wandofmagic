@@ -47,6 +47,26 @@ describe('static trusted mapper path container hardening', () => {
             .build();
         await expectGeneratedParity(arrayShape, { rows });
     });
+
+    it('isolates later writes after copying an owned branch', async () => {
+        const compiled = spell<{
+            destination?: { nested: { value: string } };
+            source: { nested: { value: string } };
+        }>()
+            .set(['source', 'nested', 'value'], 'source')
+            .copy(['source'], ['destination'])
+            .set(['destination', 'nested', 'value'], 'destination')
+            .build();
+        const input = { source: { nested: { value: 'input' } } };
+        const artifact = emitTrustedMapperModule(compiled);
+        const generated = await materializeGeneratedMapper(artifact.source, artifact.bindings);
+
+        expect(generated(input)).toEqual({
+            destination: { nested: { value: 'destination' } },
+            source: { nested: { value: 'source' } },
+        });
+        expect(input).toEqual({ source: { nested: { value: 'input' } } });
+    });
 });
 
 async function expectGeneratedParity<Input extends object, Output extends object>(

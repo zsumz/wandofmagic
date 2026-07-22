@@ -1,7 +1,8 @@
 export const pathProjectionRuntimeSource = [
-    'function $projectPaths($source, $paths) {',
+    'function $projectPaths($source, $paths, $ownership) {',
     '    const $prototype = Object.getPrototypeOf($source);',
     '    let $projected = $prototype === null ? Object.create(null) : {};',
+    '    $ownership.set($projected, 1);',
     '    for (const $path of $paths) {',
     '        const $read = $readPath($source, $path);',
     '        if ($read.status === "failed") {',
@@ -10,7 +11,7 @@ export const pathProjectionRuntimeSource = [
     '        if ($read.status === "missing") {',
     '            continue;',
     '        }',
-    '        const $written = $setPath($projected, $path, $read.value);',
+    '        const $written = $setPath($projected, $path, $read.value, $ownership);',
     '        if (!$written.ok) {',
     '            return $written;',
     '        }',

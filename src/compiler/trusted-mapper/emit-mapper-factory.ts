@@ -3,6 +3,7 @@ export function emitMapperFactory(
     structuralLines: readonly string[],
     operationLines: readonly string[],
     bindings: ReadonlyArray<{ readonly index: number; readonly kind: string }>,
+    includePaths: boolean,
 ): readonly string[] {
     const lines = [
         `function ${name}($bindings, $WandError) {`,
@@ -26,6 +27,9 @@ export function emitMapperFactory(
     }
     lines.push('    return function run(input) {');
     lines.push(...structuralLines);
+    if (includePaths) {
+        lines.push('        const $ownership = new WeakMap([[$value, 1]]);');
+    }
     lines.push(...operationLines);
     lines.push('        return $value;');
     lines.push('    };');

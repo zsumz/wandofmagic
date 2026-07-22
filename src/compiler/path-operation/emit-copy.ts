@@ -48,7 +48,7 @@ export function emitCopy(instruction: CopyInstruction, operationIndex: number): 
         lines.push('            } else {');
     }
     lines.push(`                const ${write} = $commitSet(`);
-    lines.push(`                    $value, ${destination}, ${sourceRead}.value,`);
+    lines.push(`                    $value, ${destination}, ${sourceRead}.value, $ownership,`);
     lines.push('                );');
     lines.push(`                if (!${write}.ok) {`);
     lines.push(`                    $failIssue($WandError, ${write}.issue, ${step.id}, "copy");`);

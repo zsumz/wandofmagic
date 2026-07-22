@@ -5,7 +5,9 @@ import { sourceString } from '../emitter/source-string.js';
 export function emitPick(instruction: PickInstruction, operationIndex: number): readonly string[] {
     const projected = `$projected${String(operationIndex)}`;
     return [
-        `        const ${projected} = $projectPaths($value, ${pathsSource(instruction.paths)});`,
+        `        const ${projected} = $projectPaths(`,
+        `            $value, ${pathsSource(instruction.paths)}, $ownership,`,
+        '        );',
         `        if (!${projected}.ok) {`,
         `            $failIssue($WandError, ${projected}.issue, ${sourceString(instruction.id)}, "pick");`,
         '        }',

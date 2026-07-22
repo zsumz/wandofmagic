@@ -52,7 +52,10 @@ export function emitTrimPaths(
         lines.push(`        if (${read}.status === "found" && typeof ${read}.value === "string") {`);
         lines.push(`            const ${trimmed} = ${read}.value.trim();`);
         lines.push(`            if (${trimmed} !== ${read}.value) {`);
-        lines.push(`                const ${write} = $setPath(${staged}, ${pathLiteral}, ${trimmed});`);
+        lines.push(
+            `                const ${write} = $setPath(`
+            + `${staged}, ${pathLiteral}, ${trimmed}, $ownership);`,
+        );
         lines.push(`                if (!${write}.ok) {`);
         lines.push(
             `                    $failIssue($WandError, ${write}.issue,`

@@ -56,6 +56,7 @@ export function emitTrustedMapperModule<Input extends object, Output extends obj
             structural === undefined ? emitTrustedSnapshot() : emitStructuralProjection(structural),
             operationLines,
             state.bindingDescriptions,
+            includePaths,
         ),
     ];
     for (let depth = 1; depth <= resolved.depth; depth += 1) {

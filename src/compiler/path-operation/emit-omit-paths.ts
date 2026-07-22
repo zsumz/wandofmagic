@@ -20,7 +20,10 @@ export function emitOmitPaths(
         }
         const literal = pathSource(path);
         const result = `$omitResult${suffix}_${String(index)}`;
-        lines.push(`        const ${result} = $deletePath(${staged}, ${literal});`);
+        lines.push(
+            `        const ${result} = $deletePath(`
+            + `${staged}, ${literal}, $ownership);`,
+        );
         lines.push(`        if (!${result}.ok) {`);
         lines.push(
             `            $failIssue($WandError, ${result}.issue,`

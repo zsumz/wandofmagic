@@ -18,7 +18,7 @@ export function emitDefaultPath(
         `            $failIssue($WandError, ${read}.issue, ${sourceString(instruction.id)}, "default");`,
         '        }',
         `        if (${read}.status === "missing" || ${read}.value === undefined) {`,
-        `            const ${write} = $commitSet($value, ${path}, ${binding});`,
+        `            const ${write} = $commitSet($value, ${path}, ${binding}, $ownership);`,
         `            if (!${write}.ok) {`,
         `                $failIssue($WandError, ${write}.issue, ${sourceString(instruction.id)}, "default");`,
         '            }',

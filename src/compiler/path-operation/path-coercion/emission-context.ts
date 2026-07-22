@@ -32,7 +32,9 @@ export function convertedAssignmentLines(
     const write = `$coercePathWrite${String(context.operationIndex)}`;
     return [
         `        if (!Object.is(${context.current}, ${converted})) {`,
-        `            const ${write} = $commitSet($value, ${context.path}, ${converted});`,
+        `            const ${write} = $commitSet(`,
+        `                $value, ${context.path}, ${converted}, $ownership,`,
+        '            );',
         `            if (!${write}.ok) {`,
         `                $failIssue($WandError, ${write}.issue,`
             + ` ${sourceString(context.instruction.id)}, "coerce");`,

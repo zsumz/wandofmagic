@@ -11,7 +11,9 @@ export function emitSetPath(
     const binding = addBinding(state, instruction.replacement, 'set', instruction.id);
     const result = `$set${String(operationIndex)}`;
     return [
-        `        const ${result} = $commitSet($value, ${pathSource(instruction.path)}, ${binding});`,
+        `        const ${result} = $commitSet(`,
+        `            $value, ${pathSource(instruction.path)}, ${binding}, $ownership,`,
+        '        );',
         `        if (!${result}.ok) {`,
         `            $failIssue($WandError, ${result}.issue, ${sourceString(instruction.id)}, "set");`,
         '        }',

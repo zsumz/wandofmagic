@@ -56,7 +56,10 @@ export function emitTransformPath(
     })}`);
     lines.push('            }');
     lines.push(`            if (!Object.is(${read}.value, ${transformed})) {`);
-    lines.push(`                const ${write} = $commitSet($value, ${path}, ${transformed});`);
+    lines.push(
+        `                const ${write} = $commitSet(`
+        + `$value, ${path}, ${transformed}, $ownership);`,
+    );
     lines.push(`                if (!${write}.ok) {`);
     lines.push(`                    $failIssue($WandError, ${write}.issue, ${step.id}, "transform");`);
     lines.push('                }');
