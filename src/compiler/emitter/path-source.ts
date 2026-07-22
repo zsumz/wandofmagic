@@ -16,32 +16,6 @@ export function readPathSource(
     return `${readPathName(index)}(${root})`;
 }
 
-export function pathsSource(paths: readonly FieldPath[], state: EmitterState): string {
-    return pathGroupName(registerPathGroup(paths, state));
-}
-
-export function pathReadersSource(paths: readonly FieldPath[], state: EmitterState): string {
-    const groupIndex = registerPathGroup(paths, state);
-    state.readPathGroupIndexes.add(groupIndex);
-    for (const pathIndex of state.pathGroups[groupIndex] ?? []) {
-        state.readPathIndexes.add(pathIndex);
-    }
-    return pathReadersName(groupIndex);
-}
-
-function registerPathGroup(paths: readonly FieldPath[], state: EmitterState): number {
-    const indexes = paths.map((path) => registerPath(path, state));
-    const key = indexes.join(',');
-    const existing = state.pathGroupIndexes.get(key);
-    if (existing !== undefined) {
-        return existing;
-    }
-    const index = state.pathGroups.length;
-    state.pathGroupIndexes.set(key, index);
-    state.pathGroups.push(indexes);
-    return index;
-}
-
 function registerPath(path: FieldPath, state: EmitterState): number {
     const key = JSON.stringify(path);
     const existing = state.pathIndexes.get(key);
@@ -61,18 +35,6 @@ export function emitPathDeclarations(state: EmitterState): readonly string[] {
         const path = state.paths[index];
         if (path !== undefined) {
             lines.push('', ...emitReadPathProgram(path, index));
-        }
-    }
-    for (let index = 0; index < state.pathGroups.length; index += 1) {
-        const group = state.pathGroups[index] ?? [];
-        lines.push(
-            `const ${pathGroupName(index)} = Object.freeze([${group.map(pathName).join(', ')}]);`,
-        );
-        if (state.readPathGroupIndexes.has(index)) {
-            lines.push(
-                `const ${pathReadersName(index)} = Object.freeze([`
-                + `${group.map(readPathName).join(', ')}]);`,
-            );
         }
     }
     return lines;
@@ -131,14 +93,6 @@ function emitReadPathProgram(path: FieldPath, pathIndex: number): readonly strin
 
 function pathName(index: number): string {
     return `$path${String(index)}`;
-}
-
-function pathGroupName(index: number): string {
-    return `$paths${String(index)}`;
-}
-
-function pathReadersName(index: number): string {
-    return `$pathReaders${String(index)}`;
 }
 
 function readPathName(index: number): string {

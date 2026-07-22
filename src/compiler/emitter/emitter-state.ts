@@ -7,24 +7,18 @@ import type { FieldPath } from '../../core/path/path.js';
 export interface EmitterState {
     readonly bindingDescriptions: MapperBindingDescription[];
     readonly bindings: unknown[];
-    readonly pathGroups: number[][];
-    readonly pathGroupIndexes: Map<string, number>;
     readonly pathIndexes: Map<string, number>;
     readonly paths: FieldPath[];
     readonly readPathIndexes: Set<number>;
-    readonly readPathGroupIndexes: Set<number>;
 }
 
 export function createEmitterState(): EmitterState {
     return {
         bindingDescriptions: [],
         bindings: [],
-        pathGroupIndexes: new Map(),
-        pathGroups: [],
         pathIndexes: new Map(),
         paths: [],
         readPathIndexes: new Set(),
-        readPathGroupIndexes: new Set(),
     };
 }
 

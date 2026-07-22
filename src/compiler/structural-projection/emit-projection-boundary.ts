@@ -25,6 +25,6 @@ export function emitProjectionBoundary(): string[] {
         '        if ($prototype !== $objectPrototype && $prototype !== null) {',
         `            ${prototypeFailure}`,
         '        }',
-        '        const $value = $prototype === null ? Object.create(null) : {};',
+        '        let $value = $prototype === null ? Object.create(null) : {};',
     ];
 }
