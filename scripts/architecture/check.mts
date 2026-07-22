@@ -20,7 +20,6 @@ const executableRoots = [path.join(root, 'scripts'), path.join(root, 'smoke')];
 const inspectedRoots = [sourceRoot, testRoot, ...executableRoots];
 const migrationJavaScriptModules = new Set([
     'scripts/check-publish.mjs',
-    'smoke/package.smoke.mjs',
 ]);
 const failures: string[] = [];
 
