@@ -28,6 +28,21 @@ export function readPathSource(
     return `${name}(${root}, ${prefix.variable} ??= ${readPrefixName(prefix.index)}(${root}))`;
 }
 
+/** Reuse a validated operation-local prefix as the owner above a deep write parent. */
+export function currentReadAncestorSource(
+    path: FieldPath,
+    state: EmitterState,
+): string | undefined {
+    if (path.length < 3) {
+        return undefined;
+    }
+    const prefix = deepestActivePrefix(path, state.activeReadPrefixes);
+    const ancestorDepth = path.length - 2;
+    return prefix !== undefined && prefix.path.length >= ancestorDepth
+        ? `${prefix.variable}.containers[${String(ancestorDepth)}]`
+        : undefined;
+}
+
 export function registerReadPrefix(path: FieldPath, state: EmitterState): number {
     const index = registerPath(path, state);
     state.readPrefixIndexes.add(index);

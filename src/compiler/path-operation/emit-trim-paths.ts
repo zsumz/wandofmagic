@@ -1,7 +1,11 @@
 import type { TrimPathsInstruction } from '../../instructions/path/path-operation.js';
 import type { EmitterState } from '../emitter/emitter-state.js';
 import { failureCallSource } from '../emitter/failure-call-source.js';
-import { pathSource, readPathSource } from '../emitter/path-source.js';
+import {
+    currentReadAncestorSource,
+    pathSource,
+    readPathSource,
+} from '../emitter/path-source.js';
 import { sourceString } from '../emitter/source-string.js';
 
 export function emitTrimPaths(
@@ -49,6 +53,7 @@ export function emitTrimPaths(
         const trimmed = `$pathTrimmed${suffix}_${String(index)}`;
         const write = `$trimPathWrite${suffix}_${String(index)}`;
         const pathLiteral = pathSource(path, state);
+        const ancestor = trimAncestorSource(path, parentGroups, suffix, state);
         const parentIndex = parentGroups.findIndex((parent) => sameParent(parent, path));
         const parent = parentIndex < 0
             ? undefined
@@ -63,7 +68,8 @@ export function emitTrimPaths(
         }
         lines.push(
             `${writeIndent}const ${write} = $commitRead(`
-            + `$value, ${pathLiteral}, ${read}, ${trimmed}, $ownership, true);`,
+            + `$value, ${pathLiteral}, ${read}, ${trimmed}, $ownership, true`
+            + `${ancestor === undefined ? '' : `, ${ancestor}`});`,
         );
         lines.push(`${writeIndent}if (!${write}.ok) {`);
         lines.push(
@@ -88,13 +94,38 @@ export function emitTrimPaths(
 
 type PathParent = ReadonlyArray<number | string>;
 
+function trimAncestorSource(
+    path: TrimPathsInstruction['paths'][number],
+    parents: readonly PathParent[],
+    suffix: string,
+    state: EmitterState,
+): string | undefined {
+    const prefixAncestor = currentReadAncestorSource(path, state);
+    const parentIndex = parents.findIndex((candidate) =>
+        samePath(candidate, path.slice(0, -2)));
+    if (parentIndex < 0) {
+        return prefixAncestor;
+    }
+    const localAncestor = `$trimParent${suffix}_${String(parentIndex)}`;
+    return prefixAncestor === undefined
+        ? localAncestor
+        : `${localAncestor} ?? ${prefixAncestor}`;
+}
+
 function groupPathParents(paths: TrimPathsInstruction['paths']): readonly PathParent[] {
     const parents: PathParent[] = [];
-    for (const path of paths) {
+    for (let index = 0; index < paths.length; index += 1) {
+        const path = paths[index];
+        if (path === undefined) {
+            continue;
+        }
         const parent = path.slice(0, -1);
         if (paths.filter((candidate) => sameParent(parent, candidate)).length > 1
-            && !parents.some((candidate) => samePath(candidate, parent))) {
-            parents.push(parent);
+            || paths.slice(index + 1).some((candidate) =>
+                samePath(parent, candidate.slice(0, -2)))) {
+            if (!parents.some((candidate) => samePath(candidate, parent))) {
+                parents.push(parent);
+            }
         }
     }
     return parents;

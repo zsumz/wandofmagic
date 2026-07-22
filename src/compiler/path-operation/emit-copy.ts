@@ -1,7 +1,11 @@
 import type { CopyInstruction } from '../../instructions/path/path-operation.js';
 import type { EmitterState } from '../emitter/emitter-state.js';
 import { failureCallSource } from '../emitter/failure-call-source.js';
-import { pathSource, readPathSource } from '../emitter/path-source.js';
+import {
+    currentReadAncestorSource,
+    pathSource,
+    readPathSource,
+} from '../emitter/path-source.js';
 import { sourceString } from '../emitter/source-string.js';
 
 export function emitCopy(
@@ -15,6 +19,7 @@ export function emitCopy(
     const sourceRead = `$copySource${suffix}`;
     const destinationRead = `$copyDestination${suffix}`;
     const write = `$copyWrite${suffix}`;
+    const destinationAncestor = currentReadAncestorSource(instruction.destination, state);
     const step = { id: sourceString(instruction.id), kind: 'copy' as const };
     const lines = [
         `        const ${sourceRead} = ${readPathSource('$value', instruction.source, state)};`,
@@ -58,7 +63,8 @@ export function emitCopy(
     lines.push(`                const ${write} = $commitRead(`);
     lines.push(
         `                    $value, ${destination}, ${destinationRead},`
-        + ` ${sourceRead}.value, $ownership, true,`,
+        + ` ${sourceRead}.value, $ownership, true,`
+        + (destinationAncestor === undefined ? '' : ` ${destinationAncestor},`),
     );
     lines.push('                );');
     lines.push(`                if (!${write}.ok) {`);
