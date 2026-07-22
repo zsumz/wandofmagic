@@ -85,6 +85,7 @@
   "scripts": {
     "clean": "node scripts/maintenance/clean.mts",
     "build": "tsdown",
+    "benchmark:deep": "npm run build && node scripts/benchmarks/deep/benchmark-deep.mts",
     "benchmark:flat": "npm run build && node scripts/benchmarks/flat/benchmark-flat.mts",
     "benchmark:types": "node scripts/benchmarks/types/benchmark-types.mts",
     "lint": "npm run build && eslint .",
