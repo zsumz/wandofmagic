@@ -30,11 +30,11 @@ export const esmEntrypointSmoke = `
         .build();
     const deep = deepSpell.run({});
 
-    const artifact = emitTrustedMapperModule(deepSpell);
+    const artifact = emitTrustedMapperModule(collection(deepSpell));
     const generatedModule = await import('data:text/javascript;base64,' +
         Buffer.from(artifact.source).toString('base64'));
     const generatedDeep = generatedModule
-        .createTrustedMapper(artifact.bindings, WandError)({});
+        .createTrustedMapper(artifact.bindings, WandError)([{}])[0];
     const collectionValue = collection(normalize).run([{ raw_count: '8' }]);
     if (!result.ok || result.changes.length !== 0 ||
         result.value.count !== 7 || 'raw_count' in result.value) {

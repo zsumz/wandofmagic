@@ -31,11 +31,11 @@ export const commonJsEntrypointSmoke = `
             ['metadata', 'region'], ['metadata', 'summary']])
         .build();
     const deep = deepSpell.run({});
-    const artifact = emitTrustedMapperModule(deepSpell);
+    const artifact = emitTrustedMapperModule(collection(deepSpell));
     const generatedModule = await import('data:text/javascript;base64,' +
         Buffer.from(artifact.source).toString('base64'));
     const generatedDeep = generatedModule
-        .createTrustedMapper(artifact.bindings, WandError)({});
+        .createTrustedMapper(artifact.bindings, WandError)([{}])[0];
     const collectionValue = collection(normalize).run([{ raw_count: '8' }]);
 
     if (value.count !== 9 || deep.metadata.origin !== 'CJS' ||

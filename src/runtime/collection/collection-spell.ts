@@ -3,12 +3,15 @@ import type { RunOptions } from '../../core/execution/run-options.js';
 import type { WandResult } from '../../core/execution/result.js';
 import type { Spell } from '../../core/execution/spell.js';
 import type { SpellDescription } from '../../core/plan/description-types.js';
+import { registerCollectionItemSpell } from './collection-item-registry.js';
 import { executeCollection } from './execute-collection.js';
 
 /** A reusable root-array transformation driven by one item spell. */
 export class CollectionSpell<Input extends object, Output extends object>
 implements Spell<readonly Input[], Output[]> {
-    constructor(private readonly itemSpell: Spell<Input, Output>) {}
+    constructor(private readonly itemSpell: Spell<Input, Output>) {
+        registerCollectionItemSpell(this, itemSpell);
+    }
 
     /** Return the static, value-free plan applied to each present item. */
     public describe(): SpellDescription {
