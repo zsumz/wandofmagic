@@ -2,6 +2,7 @@ export type {
     CoercePathInstruction,
     CopyInstruction,
     DefaultPathInstruction,
+    DerivePathInstruction,
     MoveInstruction,
     OmitPathsInstruction,
     PickInstruction,

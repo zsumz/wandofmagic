@@ -6,7 +6,8 @@ export function compileFlatProgram(steps: readonly ExecutableStep[]): FlatProgra
     const instructions = steps.map((step) => step.instruction);
     if (instructions.some((instruction) =>
         instruction.kind === 'coerce-path' || instruction.kind === 'copy' ||
-        instruction.kind === 'default-path' || instruction.kind === 'move' ||
+        instruction.kind === 'default-path' || instruction.kind === 'derive-path' ||
+        instruction.kind === 'move' ||
         instruction.kind === 'omit-paths' || instruction.kind === 'pick' ||
         instruction.kind === 'set' ||
         instruction.kind === 'transform-path' || instruction.kind === 'trim-paths')) {
@@ -14,7 +15,8 @@ export function compileFlatProgram(steps: readonly ExecutableStep[]): FlatProgra
     }
     return Object.freeze(instructions.filter((instruction) =>
         instruction.kind !== 'coerce-path' && instruction.kind !== 'copy' &&
-        instruction.kind !== 'default-path' && instruction.kind !== 'move' &&
+        instruction.kind !== 'default-path' && instruction.kind !== 'derive-path' &&
+        instruction.kind !== 'move' &&
         instruction.kind !== 'omit-paths' && instruction.kind !== 'pick' &&
         instruction.kind !== 'set' &&
         instruction.kind !== 'transform-path' && instruction.kind !== 'trim-paths'));

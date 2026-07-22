@@ -6,12 +6,7 @@ import type {
 } from '../../core/plan/operation-options.js';
 import type { PathInput } from '../../core/path/path.js';
 import { invokeBuilderOmit } from '../../internal/type-boundary/builder.js';
-import type { SynchronousCallbackValue } from '../../types/builder/callback-value.js';
 import type {
-    BuilderDeriveDependencies,
-    BuilderDeriveKey,
-    BuilderDeriveOutput,
-    BuilderDeriveValues,
     BuilderOmitKeys,
     BuilderOmitOutput,
     BuilderOutput,
@@ -47,23 +42,6 @@ export class WandBuilder<
     ): WandBuilder<Input, BuilderRenameOutput<BuilderOutput<Current, Program>, Mapping>> {
         return this.rebuild(this.builder.rename<Mapping>(mapping, options));
     }
-    public derive<
-        const Key extends string,
-        const Dependencies extends BuilderDeriveDependencies<BuilderOutput<Current, Program>>,
-        Output,
-    >(
-        key: BuilderDeriveKey<BuilderOutput<Current, Program>, Key>,
-        dependencies: Dependencies,
-        derive: (values: BuilderDeriveValues<BuilderOutput<Current, Program>, Dependencies>) =>
-        SynchronousCallbackValue<Output>,
-        options: StepOptions = {},
-    ): WandBuilder<Input, BuilderDeriveOutput<BuilderOutput<Current, Program>, Key, Output>> {
-        return new WandBuilder(
-            this.input,
-            this.builder.derive<Key, Dependencies, Output>(key, dependencies, derive, options),
-        );
-    }
-
     public move<
         const Source extends PathInput,
         const Destination extends PathInput,

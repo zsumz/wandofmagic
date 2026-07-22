@@ -16,6 +16,14 @@ export interface DefaultPathInstruction {
     readonly path: readonly [string, ...Array<string | number>];
 }
 
+export interface DerivePathInstruction {
+    readonly binding: unknown;
+    readonly dependencies: ReadonlyArray<readonly [string, ...Array<string | number>]>;
+    readonly destination: readonly [string, ...Array<string | number>];
+    readonly id: string;
+    readonly kind: 'derive-path';
+}
+
 export interface OmitPathsInstruction {
     readonly id: string;
     readonly kind: 'omit-paths';
@@ -71,6 +79,7 @@ export type OperationInstruction =
     | CoercePathInstruction
     | CopyInstruction
     | DefaultPathInstruction
+    | DerivePathInstruction
     | FlatOperationInstruction
     | MoveInstruction
     | OmitPathsInstruction

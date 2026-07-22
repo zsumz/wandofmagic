@@ -7,16 +7,10 @@ import type {
 import type { SpellOptions } from '../../core/plan/spell-options.js';
 import type { PathInput } from '../../core/path/path.js';
 import type { Spell } from '../../core/execution/spell.js';
-import { createDeriveStep } from '../../operations/flat/derive/create-derive-step.js';
 import { createMoveStep } from '../../operations/path/move/create-move-step.js';
 import { createRenameStep } from '../../operations/flat/rename/create-rename-step.js';
 import { CompiledSpell } from '../../runtime/compiled-spell/compiled-spell.js';
-import type { SynchronousCallbackValue } from '../../types/builder/callback-value.js';
 import type {
-    BuilderDeriveDependencies,
-    BuilderDeriveKey,
-    BuilderDeriveOutput,
-    BuilderDeriveValues,
     BuilderOmitKeys,
     BuilderOmitOutput,
     BuilderOutput,
@@ -57,22 +51,6 @@ export class SpellBuilder<Input extends object, Current extends object,
         return this.append<BuilderRenameOutput<BuilderOutput<Current, Program>, Mapping>>(
             createRenameStep(mapping, id));
     }
-    public derive<
-        const Key extends string,
-        const Dependencies extends BuilderDeriveDependencies<BuilderOutput<Current, Program>>,
-        Output,
-    >(
-        key: BuilderDeriveKey<BuilderOutput<Current, Program>, Key>,
-        dependencies: Dependencies,
-        derive: (values: BuilderDeriveValues<BuilderOutput<Current, Program>, Dependencies>) =>
-        SynchronousCallbackValue<Output>,
-        options: StepOptions = {},
-    ): SpellBuilder<Input, BuilderDeriveOutput<BuilderOutput<Current, Program>, Key, Output>> {
-        const id = this.nextId('derive', options.id);
-        return this.append<BuilderDeriveOutput<BuilderOutput<Current, Program>, Key, Output>>(
-            createDeriveStep(key, dependencies, derive, id));
-    }
-
     public move<
         const Source extends PathInput,
         const Destination extends PathInput,
