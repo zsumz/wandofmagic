@@ -1,5 +1,7 @@
 import type { FieldPath } from '../../core/path/path.js';
-import type { EmitterState } from './emitter-state.js';
+import type { ActiveReadPrefix, EmitterState } from './emitter-state.js';
+import { pathName, readPathName, readPrefixName } from './path-program-names.js';
+import { emitReadPathProgram, emitReadPrefixProgram } from './read-program-source.js';
 
 /** Register one normalized path for immutable module-level emission. */
 export function pathSource(path: FieldPath, state: EmitterState): string {
@@ -11,9 +13,51 @@ export function readPathSource(
     path: FieldPath,
     state: EmitterState,
 ): string {
+    const pathIndex = registerPath(path, state);
+    const prefix = deepestActivePrefix(path, state.activeReadPrefixes);
+    const prefixIndex = prefix?.index;
+    const key = `${String(pathIndex)}:${prefixIndex === undefined ? '' : String(prefixIndex)}`;
+    state.readPathPrograms.set(key, {
+        pathIndex,
+        ...prefixIndex === undefined ? {} : { prefixIndex },
+    });
+    const name = readPathName(pathIndex, prefixIndex);
+    if (prefix === undefined) {
+        return `${name}(${root})`;
+    }
+    return `${name}(${root}, ${prefix.variable} ??= ${readPrefixName(prefix.index)}(${root}))`;
+}
+
+export function registerReadPrefix(path: FieldPath, state: EmitterState): number {
     const index = registerPath(path, state);
-    state.readPathIndexes.add(index);
-    return `${readPathName(index)}(${root})`;
+    state.readPrefixIndexes.add(index);
+    return index;
+}
+
+export function emitPathDeclarations(state: EmitterState): readonly string[] {
+    const lines = state.paths.map((path, index) =>
+        `const ${pathName(index)} = Object.freeze(${JSON.stringify(path)});`);
+    for (const index of state.readPrefixIndexes) {
+        const path = state.paths[index];
+        if (path !== undefined) {
+            lines.push('', ...emitReadPrefixProgram(path, index));
+        }
+    }
+    for (const program of state.readPathPrograms.values()) {
+        const path = state.paths[program.pathIndex];
+        const prefix = program.prefixIndex === undefined
+            ? undefined
+            : state.paths[program.prefixIndex];
+        if (path !== undefined) {
+            lines.push('', ...emitReadPathProgram(
+                path,
+                program.pathIndex,
+                prefix,
+                program.prefixIndex,
+            ));
+        }
+    }
+    return lines;
 }
 
 function registerPath(path: FieldPath, state: EmitterState): number {
@@ -28,73 +72,12 @@ function registerPath(path: FieldPath, state: EmitterState): number {
     return index;
 }
 
-export function emitPathDeclarations(state: EmitterState): readonly string[] {
-    const lines = state.paths.map((path, index) =>
-        `const ${pathName(index)} = Object.freeze(${JSON.stringify(path)});`);
-    for (const index of state.readPathIndexes) {
-        const path = state.paths[index];
-        if (path !== undefined) {
-            lines.push('', ...emitReadPathProgram(path, index));
-        }
-    }
-    return lines;
-}
-
-function emitReadPathProgram(path: FieldPath, pathIndex: number): readonly string[] {
-    const pathReference = pathName(pathIndex);
-    const lines = [
-        `function ${readPathName(pathIndex)}($root) {`,
-        '    const $container0 = $root;',
-    ];
-    for (let index = 0; index < path.length; index += 1) {
-        const read = `$read${String(index)}`;
-        const container = `$container${String(index)}`;
-        const length = String(index + 1);
-        lines.push(
-            `    const ${read} = $readField(`
-            + `${container}, ${JSON.stringify(path[index])}, ${pathReference}, ${length}`
-            + `${index === path.length - 1 ? ', true' : ''});`,
-        );
-        lines.push(`    if (${read}.status !== "found") {`);
-        lines.push(`        return ${read};`);
-        lines.push('    }');
-        if (index === path.length - 1) {
-            lines.push(`    return ${read};`);
-            continue;
-        }
-        lines.push(`    if (${read}.value === undefined) {`);
-        lines.push('        return { status: "missing" };');
-        lines.push('    }');
-        const inspection = `$inspection${String(index)}`;
-        const child = `$container${String(index + 1)}`;
-        lines.push(
-            `    const ${inspection} = $inspectContainer(`
-            + `${read}.value, ${pathReference}, ${length});`,
-        );
-        lines.push(`    if (!${inspection}.ok) {`);
-        lines.push(`        return { status: "failed", issue: ${inspection}.issue };`);
-        lines.push('    }');
-        lines.push(`    const ${child} = ${inspection}.value;`);
-        const previous = Array.from(
-            { length: index + 1 },
-            (_, previousIndex) => `${child} === $container${String(previousIndex)}`,
-        );
-        lines.push(`    if (${previous.join(' || ')}) {`);
-        lines.push('        return { status: "failed", issue: $pathIssue(');
-        lines.push('            "invalid_input",');
-        lines.push('            "Wandofmagic will not traverse a cycle along the selected path.",');
-        lines.push(`            ${pathReference}, ${length},`);
-        lines.push('        ) };');
-        lines.push('    }');
-    }
-    lines.push('}');
-    return lines;
-}
-
-function pathName(index: number): string {
-    return `$path${String(index)}`;
-}
-
-function readPathName(index: number): string {
-    return `$readPath${String(index)}`;
+function deepestActivePrefix(
+    path: FieldPath,
+    prefixes: readonly ActiveReadPrefix[],
+): ActiveReadPrefix | undefined {
+    return prefixes
+        .filter((prefix) => prefix.path.length < path.length
+            && prefix.path.every((segment, index) => segment === path[index]))
+        .sort((left, right) => right.path.length - left.path.length)[0];
 }
