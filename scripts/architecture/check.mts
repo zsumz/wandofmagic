@@ -18,9 +18,6 @@ const sourceRoot = path.join(root, 'src');
 const testRoot = path.join(root, 'test');
 const executableRoots = [path.join(root, 'scripts'), path.join(root, 'smoke')];
 const inspectedRoots = [sourceRoot, testRoot, ...executableRoots];
-const migrationJavaScriptModules = new Set([
-    'scripts/check-publish.mjs',
-]);
 const failures: string[] = [];
 
 const packageJson: unknown = JSON.parse(await readFile(path.join(root, 'package.json'), 'utf8'));
@@ -40,9 +37,6 @@ const javascriptModules = [
 ];
 for (const file of javascriptModules) {
     const relative = relativePath(root, file);
-    if (migrationJavaScriptModules.has(relative)) {
-        continue;
-    }
     failures.push(
         `${relative}: owned modules must use TypeScript, not JavaScript modules.`,
     );

@@ -99,11 +99,11 @@
     "smoke:list": "smoque list smoke/",
     "smoke": "smoque run smoke/ --ci",
     "check:code": "npm run build && eslint . && npm run architecture:check && tsc -p tsconfig.json && tsc -p tsconfig.scripts.json && tsc -p tsconfig.types.json && npm run benchmark:types && vitest run --coverage",
-    "check:package": "smoque list smoke/ && smoque run smoke/ --ci && npm pack --dry-run --json --ignore-scripts",
+    "check:package": "smoque list smoke/ && smoque run smoke/ --ci && node scripts/release/dry-run-pack.mts",
     "check": "npm run check:code && npm run check:package",
     "validate": "npm run check",
     "prepack": "npm run build",
-    "prepublishOnly": "node scripts/check-publish.mjs",
+    "prepublishOnly": "node scripts/release/check-publish.mts",
     "publish:alpha": "npm publish --tag alpha --access public"
   },
   "devDependencies": {

@@ -1,5 +1,5 @@
-const version = process.env.npm_package_version ?? '';
-const tag = process.env.npm_config_tag ?? 'latest';
+const version = process.env['npm_package_version'] ?? '';
+const tag = process.env['npm_config_tag'] ?? 'latest';
 
 if (version === '0.0.0') {
     console.error('wandofmagic@0.0.0 is a repository-only development version and cannot be published.');
