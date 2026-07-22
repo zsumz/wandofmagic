@@ -59,7 +59,7 @@ export function emitMove(
     lines.push(`                const ${written} = $commitRead(`);
     lines.push(
         `                    $value, ${destination}, ${destinationRead},`
-        + ` ${sourceRead}.value, $ownership,`,
+        + ` ${sourceRead}.value, $ownership, true,`,
     );
     lines.push('                );');
     lines.push(`                if (!${written}.ok) {`);

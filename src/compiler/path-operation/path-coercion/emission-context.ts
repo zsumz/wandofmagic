@@ -31,10 +31,12 @@ export function convertedAssignmentLines(
     converted: string,
 ): readonly string[] {
     const write = `$coercePathWrite${String(context.operationIndex)}`;
+    const readIsCurrent = context.instruction.coercer.kind === 'custom' ? '' : ' true,';
     return [
         `        if (!Object.is(${context.current}, ${converted})) {`,
         `            const ${write} = $commitRead(`,
-        `                $value, ${context.path}, ${context.read}, ${converted}, $ownership,`,
+        `                $value, ${context.path}, ${context.read}, ${converted},`
+            + ` $ownership,${readIsCurrent}`,
         '            );',
         `            if (!${write}.ok) {`,
         `                $failIssue($WandError, ${write}.issue,`

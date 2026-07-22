@@ -63,7 +63,7 @@ export function emitTrimPaths(
         }
         lines.push(
             `${writeIndent}const ${write} = $commitRead(`
-            + `$value, ${pathLiteral}, ${read}, ${trimmed}, $ownership);`,
+            + `$value, ${pathLiteral}, ${read}, ${trimmed}, $ownership, true);`,
         );
         lines.push(`${writeIndent}if (!${write}.ok) {`);
         lines.push(

@@ -19,7 +19,7 @@ export function emitDefaultPath(
         '        }',
         `        if (${read}.status === "missing" || ${read}.value === undefined) {`,
         `            const ${write} = $commitRead(`,
-        `                $value, ${path}, ${read}, ${binding}, $ownership,`,
+        `                $value, ${path}, ${read}, ${binding}, $ownership, true,`,
         '            );',
         `            if (!${write}.ok) {`,
         `                $failIssue($WandError, ${write}.issue, ${sourceString(instruction.id)}, "default");`,

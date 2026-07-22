@@ -58,7 +58,7 @@ export function emitCopy(
     lines.push(`                const ${write} = $commitRead(`);
     lines.push(
         `                    $value, ${destination}, ${destinationRead},`
-        + ` ${sourceRead}.value, $ownership,`,
+        + ` ${sourceRead}.value, $ownership, true,`,
     );
     lines.push('                );');
     lines.push(`                if (!${write}.ok) {`);
