@@ -12,7 +12,7 @@ export function emitCoercePath(
     state: EmitterState,
 ): readonly string[] {
     const suffix = String(operationIndex);
-    const path = pathSource(instruction.path);
+    const path = pathSource(instruction.path, state);
     const read = `$coercePathRead${suffix}`;
     const current = `$current${suffix}`;
     const context: PathCoercionContext = { current, instruction, operationIndex, path };

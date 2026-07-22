@@ -1,12 +1,17 @@
 import type { CopyInstruction } from '../../instructions/path/path-operation.js';
+import type { EmitterState } from '../emitter/emitter-state.js';
 import { failureCallSource } from '../emitter/failure-call-source.js';
 import { pathSource } from '../emitter/path-source.js';
 import { sourceString } from '../emitter/source-string.js';
 
-export function emitCopy(instruction: CopyInstruction, operationIndex: number): readonly string[] {
+export function emitCopy(
+    instruction: CopyInstruction,
+    operationIndex: number,
+    state: EmitterState,
+): readonly string[] {
     const suffix = String(operationIndex);
-    const source = pathSource(instruction.source);
-    const destination = pathSource(instruction.destination);
+    const source = pathSource(instruction.source, state);
+    const destination = pathSource(instruction.destination, state);
     const sourceRead = `$copySource${suffix}`;
     const destinationRead = `$copyDestination${suffix}`;
     const write = `$copyWrite${suffix}`;

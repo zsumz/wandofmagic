@@ -1,12 +1,17 @@
 import type { MoveInstruction } from '../../instructions/path/path-operation.js';
+import type { EmitterState } from '../emitter/emitter-state.js';
 import { failureCallSource } from '../emitter/failure-call-source.js';
 import { pathSource } from '../emitter/path-source.js';
 import { sourceString } from '../emitter/source-string.js';
 
-export function emitMove(instruction: MoveInstruction, operationIndex: number): readonly string[] {
+export function emitMove(
+    instruction: MoveInstruction,
+    operationIndex: number,
+    state: EmitterState,
+): readonly string[] {
     const suffix = String(operationIndex);
-    const source = pathSource(instruction.source);
-    const destination = pathSource(instruction.destination);
+    const source = pathSource(instruction.source, state);
+    const destination = pathSource(instruction.destination, state);
     const sourceRead = `$moveSource${suffix}`;
     const destinationRead = `$moveDestination${suffix}`;
     const written = `$moveWritten${suffix}`;

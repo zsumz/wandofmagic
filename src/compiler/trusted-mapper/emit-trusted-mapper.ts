@@ -4,6 +4,7 @@ import { getCollectionItemSpell } from '../../runtime/collection/collection-item
 import { CompilerError } from '../error/compiler-error.js';
 import { emitOperation } from '../emitter/emit-operation.js';
 import { createEmitterState } from '../emitter/emitter-state.js';
+import { emitPathDeclarations } from '../emitter/path-source.js';
 import type { TrustedMapperModule } from './emitted-mapper.js';
 import { collectionRuntimeSource } from '../generated-runtime/collection-runtime-source.js';
 import { generatedRuntimeSource } from '../generated-runtime/generated-runtime-source.js';
@@ -49,6 +50,7 @@ export function emitTrustedMapperModule<Input extends object, Output extends obj
     const runtimeLines = [
         ...generatedRuntimeSource(includeIsoDate, includePaths),
         ...resolved.depth > 0 ? collectionRuntimeSource : [],
+        ...emitPathDeclarations(state),
     ];
     const factories = [
         ...emitMapperFactory(

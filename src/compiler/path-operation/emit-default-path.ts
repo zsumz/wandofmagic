@@ -9,7 +9,7 @@ export function emitDefaultPath(
     state: EmitterState,
 ): readonly string[] {
     const binding = addBinding(state, instruction.fallback, 'default', instruction.id);
-    const path = pathSource(instruction.path);
+    const path = pathSource(instruction.path, state);
     const read = `$defaultRead${String(operationIndex)}`;
     const write = `$defaultWrite${String(operationIndex)}`;
     return [

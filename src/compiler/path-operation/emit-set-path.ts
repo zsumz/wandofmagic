@@ -12,7 +12,7 @@ export function emitSetPath(
     const result = `$set${String(operationIndex)}`;
     return [
         `        const ${result} = $commitSet(`,
-        `            $value, ${pathSource(instruction.path)}, ${binding}, $ownership,`,
+        `            $value, ${pathSource(instruction.path, state)}, ${binding}, $ownership,`,
         '        );',
         `        if (!${result}.ok) {`,
         `            $failIssue($WandError, ${result}.issue, ${sourceString(instruction.id)}, "set");`,

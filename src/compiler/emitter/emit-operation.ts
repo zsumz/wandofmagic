@@ -39,23 +39,23 @@ export function emitOperation(
         case 'rename':
             return emitRename(instruction, operationIndex);
         case 'copy':
-            return emitCopy(instruction, operationIndex);
+            return emitCopy(instruction, operationIndex, state);
         case 'default-path':
             return emitDefaultPath(instruction, operationIndex, state);
         case 'derive-path':
             return emitDerivePath(instruction, operationIndex, state);
         case 'move':
-            return emitMove(instruction, operationIndex);
+            return emitMove(instruction, operationIndex, state);
         case 'omit-paths':
-            return emitOmitPaths(instruction, operationIndex);
+            return emitOmitPaths(instruction, operationIndex, state);
         case 'pick':
-            return emitPick(instruction, operationIndex);
+            return emitPick(instruction, operationIndex, state);
         case 'set':
             return emitSetPath(instruction, operationIndex, state);
         case 'transform-path':
             return emitTransformPath(instruction, operationIndex, state);
         case 'trim-paths':
-            return emitTrimPaths(instruction, operationIndex);
+            return emitTrimPaths(instruction, operationIndex, state);
         case 'coerce-path':
             return emitCoercePath(instruction, operationIndex, state);
     }

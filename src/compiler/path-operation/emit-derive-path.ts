@@ -11,7 +11,7 @@ export function emitDerivePath(
 ): readonly string[] {
     const binding = addBinding(state, instruction.binding, 'derive', instruction.id);
     const suffix = String(operationIndex);
-    const destination = pathSource(instruction.destination);
+    const destination = pathSource(instruction.destination, state);
     const destinationRead = `$deriveDestination${suffix}`;
     const inputs = `$pathInputs${suffix}`;
     const derived = `$pathDerived${suffix}`;
@@ -38,7 +38,7 @@ export function emitDerivePath(
         if (dependency === undefined) {
             continue;
         }
-        const dependencyPath = pathSource(dependency);
+        const dependencyPath = pathSource(dependency, state);
         const read = `$deriveDependency${suffix}_${String(index)}`;
         lines.push(`        const ${read} = $readPath($value, ${dependencyPath});`);
         lines.push(`        if (${read}.status === "failed") {`);

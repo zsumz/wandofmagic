@@ -1,10 +1,12 @@
 import type { OmitPathsInstruction } from '../../instructions/path/path-operation.js';
+import type { EmitterState } from '../emitter/emitter-state.js';
 import { pathSource } from '../emitter/path-source.js';
 import { sourceString } from '../emitter/source-string.js';
 
 export function emitOmitPaths(
     instruction: OmitPathsInstruction,
     operationIndex: number,
+    state: EmitterState,
 ): readonly string[] {
     const suffix = String(operationIndex);
     const staged = `$omitStaged${suffix}`;
@@ -18,7 +20,7 @@ export function emitOmitPaths(
         if (path === undefined) {
             continue;
         }
-        const literal = pathSource(path);
+        const literal = pathSource(path, state);
         const result = `$omitResult${suffix}_${String(index)}`;
         lines.push(
             `        const ${result} = $deletePath(`

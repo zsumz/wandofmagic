@@ -11,7 +11,7 @@ export function emitTransformPath(
 ): readonly string[] {
     const binding = addBinding(state, instruction.binding, 'transform', instruction.id);
     const suffix = String(operationIndex);
-    const path = pathSource(instruction.path);
+    const path = pathSource(instruction.path, state);
     const read = `$transformRead${suffix}`;
     const transformed = `$pathTransformed${suffix}`;
     const promise = `$pathPromise${suffix}`;
