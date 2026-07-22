@@ -1,6 +1,6 @@
 import type { DefaultPathInstruction } from '../../instructions/path/path-operation.js';
 import { addBinding, type EmitterState } from '../emitter/emitter-state.js';
-import { pathSource } from '../emitter/path-source.js';
+import { pathSource, readPathSource } from '../emitter/path-source.js';
 import { sourceString } from '../emitter/source-string.js';
 
 export function emitDefaultPath(
@@ -13,7 +13,7 @@ export function emitDefaultPath(
     const read = `$defaultRead${String(operationIndex)}`;
     const write = `$defaultWrite${String(operationIndex)}`;
     return [
-        `        const ${read} = $readPath($value, ${path});`,
+        `        const ${read} = ${readPathSource('$value', instruction.path, state)};`,
         `        if (${read}.status === "failed") {`,
         `            $failIssue($WandError, ${read}.issue, ${sourceString(instruction.id)}, "default");`,
         '        }',

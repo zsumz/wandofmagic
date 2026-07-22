@@ -1,7 +1,7 @@
 import type { TransformPathInstruction } from '../../instructions/path/path-operation.js';
 import { addBinding, type EmitterState } from '../emitter/emitter-state.js';
 import { failureCallSource } from '../emitter/failure-call-source.js';
-import { pathSource } from '../emitter/path-source.js';
+import { pathSource, readPathSource } from '../emitter/path-source.js';
 import { sourceString } from '../emitter/source-string.js';
 
 export function emitTransformPath(
@@ -18,7 +18,7 @@ export function emitTransformPath(
     const write = `$transformWrite${suffix}`;
     const step = { id: sourceString(instruction.id), kind: 'transform' as const };
     const lines = [
-        `        const ${read} = $readPath($value, ${path});`,
+        `        const ${read} = ${readPathSource('$value', instruction.path, state)};`,
         `        if (${read}.status === "failed") {`,
         `            $failIssue($WandError, ${read}.issue, ${step.id}, "transform");`,
         '        }',

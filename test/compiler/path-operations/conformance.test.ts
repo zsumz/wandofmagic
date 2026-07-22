@@ -14,6 +14,8 @@ describe('static trusted mapper path-operation conformance', () => {
         const generated = await materializeGeneratedMapper(artifact.source, artifact.bindings);
 
         expect(artifact.source).not.toContain('not-serialized');
+        expect(artifact.source).not.toContain('function $readPath($root, $path)');
+        expect(artifact.source).toContain('function $readPath0($root)');
         expect(artifact.bindingDescriptions.map((binding) => binding.kind)).toEqual([
             'coercer',
             'default',

@@ -1,7 +1,7 @@
 import type { DerivePathInstruction } from '../../instructions/path/path-operation.js';
 import { addBinding, type EmitterState } from '../emitter/emitter-state.js';
 import { failureCallSource } from '../emitter/failure-call-source.js';
-import { pathSource } from '../emitter/path-source.js';
+import { pathSource, readPathSource } from '../emitter/path-source.js';
 import { sourceString } from '../emitter/source-string.js';
 
 export function emitDerivePath(
@@ -19,7 +19,8 @@ export function emitDerivePath(
     const write = `$deriveWrite${suffix}`;
     const step = { id: sourceString(instruction.id), kind: 'derive' as const };
     const lines = [
-        `        const ${destinationRead} = $readPath($value, ${destination});`,
+        `        const ${destinationRead} = `
+        + `${readPathSource('$value', instruction.destination, state)};`,
         `        if (${destinationRead}.status === "failed") {`,
         `            $failIssue($WandError, ${destinationRead}.issue, ${step.id}, "derive");`,
         '        }',
@@ -40,7 +41,9 @@ export function emitDerivePath(
         }
         const dependencyPath = pathSource(dependency, state);
         const read = `$deriveDependency${suffix}_${String(index)}`;
-        lines.push(`        const ${read} = $readPath($value, ${dependencyPath});`);
+        lines.push(
+            `        const ${read} = ${readPathSource('$value', dependency, state)};`,
+        );
         lines.push(`        if (${read}.status === "failed") {`);
         lines.push(`            $failIssue($WandError, ${read}.issue, ${step.id}, "derive");`);
         lines.push('        }');

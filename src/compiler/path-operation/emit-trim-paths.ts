@@ -1,7 +1,7 @@
 import type { TrimPathsInstruction } from '../../instructions/path/path-operation.js';
 import type { EmitterState } from '../emitter/emitter-state.js';
 import { failureCallSource } from '../emitter/failure-call-source.js';
-import { pathSource } from '../emitter/path-source.js';
+import { pathSource, readPathSource } from '../emitter/path-source.js';
 import { sourceString } from '../emitter/source-string.js';
 
 export function emitTrimPaths(
@@ -17,7 +17,7 @@ export function emitTrimPaths(
             continue;
         }
         const read = `$trimPathRead${suffix}_${String(index)}`;
-        lines.push(`        const ${read} = $readPath($value, ${pathSource(path, state)});`);
+        lines.push(`        const ${read} = ${readPathSource('$value', path, state)};`);
         lines.push(`        if (${read}.status === "failed") {`);
         lines.push(
             `            $failIssue($WandError, ${read}.issue,`

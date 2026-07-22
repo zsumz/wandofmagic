@@ -11,6 +11,8 @@ export interface EmitterState {
     readonly pathGroupIndexes: Map<string, number>;
     readonly pathIndexes: Map<string, number>;
     readonly paths: FieldPath[];
+    readonly readPathIndexes: Set<number>;
+    readonly readPathGroupIndexes: Set<number>;
 }
 
 export function createEmitterState(): EmitterState {
@@ -21,6 +23,8 @@ export function createEmitterState(): EmitterState {
         pathGroups: [],
         pathIndexes: new Map(),
         paths: [],
+        readPathIndexes: new Set(),
+        readPathGroupIndexes: new Set(),
     };
 }
 

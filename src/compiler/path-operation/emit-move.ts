@@ -1,7 +1,7 @@
 import type { MoveInstruction } from '../../instructions/path/path-operation.js';
 import type { EmitterState } from '../emitter/emitter-state.js';
 import { failureCallSource } from '../emitter/failure-call-source.js';
-import { pathSource } from '../emitter/path-source.js';
+import { pathSource, readPathSource } from '../emitter/path-source.js';
 import { sourceString } from '../emitter/source-string.js';
 
 export function emitMove(
@@ -18,7 +18,7 @@ export function emitMove(
     const deleted = `$moveDeleted${suffix}`;
     const step = { id: sourceString(instruction.id), kind: 'move' as const };
     const lines = [
-        `        const ${sourceRead} = $readPath($value, ${source});`,
+        `        const ${sourceRead} = ${readPathSource('$value', instruction.source, state)};`,
         `        if (${sourceRead}.status === "failed") {`,
         `            $failIssue($WandError, ${sourceRead}.issue, ${step.id}, "move");`,
         '        }',
@@ -35,7 +35,10 @@ export function emitMove(
         })}`);
     }
     lines.push('        } else {');
-    lines.push(`            const ${destinationRead} = $readPath($value, ${destination});`);
+    lines.push(
+        `            const ${destinationRead} = `
+        + `${readPathSource('$value', instruction.destination, state)};`,
+    );
     lines.push(`            if (${destinationRead}.status === "failed") {`);
     lines.push(`                $failIssue($WandError, ${destinationRead}.issue, ${step.id}, "move");`);
     lines.push('            }');
