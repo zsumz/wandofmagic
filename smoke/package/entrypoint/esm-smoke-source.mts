@@ -1,5 +1,5 @@
 export const esmEntrypointSmoke = `
-    import { spell } from 'wandofmagic';
+    import { collection, spell } from 'wandofmagic';
     import { number } from 'wandofmagic/coerce';
     import { emitTrustedMapperModule } from 'wandofmagic/compiler';
 
@@ -22,9 +22,13 @@ export const esmEntrypointSmoke = `
         .run({});
 
     const artifact = emitTrustedMapperModule(normalize);
+    const collectionValue = collection(normalize).run([{ raw_count: '8' }]);
     if (!result.ok || result.changes.length !== 0 ||
         result.value.count !== 7 || 'raw_count' in result.value) {
         throw new Error('ESM package entrypoints returned an invalid result');
+    }
+    if (collectionValue[0].count !== 8) {
+        throw new Error('ESM collection entrypoint returned an invalid result');
     }
     if (deep.metadata.origin !== 'ESM' || 'source' in deep.metadata ||
         deep.metadata.count !== 7 || deep.metadata.region !== 'us' ||

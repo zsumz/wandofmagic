@@ -1,5 +1,6 @@
 export { spell } from './builder/spell/spell.js';
 export type { SpellBuilder } from './builder/spell/spell-builder.js';
+export { collection } from './builder/collection/collection.js';
 export { wand } from './builder/wand/wand.js';
 export type { WandBuilder } from './builder/wand/wand-builder.js';
 export type { WandChange } from './core/change.js';
@@ -18,6 +19,7 @@ export type {
     StepOptions,
 } from './core/options.js';
 export {
+    type DataPath,
     type FieldPath,
     type Path,
     pathDepthLimit,

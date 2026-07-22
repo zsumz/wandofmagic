@@ -2,7 +2,7 @@ export const commonJsEntrypointSmoke = `
     import { createRequire } from 'node:module';
 
     const require = createRequire(import.meta.url);
-    const { spell } = require('wandofmagic');
+    const { collection, spell } = require('wandofmagic');
     const { number } = require('wandofmagic/coerce');
     const { emitTrustedMapperModule } = require('wandofmagic/compiler');
     const normalize = spell()
@@ -23,11 +23,12 @@ export const commonJsEntrypointSmoke = `
         .build()
         .run({});
     const artifact = emitTrustedMapperModule(normalize);
+    const collectionValue = collection(normalize).run([{ raw_count: '8' }]);
 
     if (value.count !== 9 || deep.metadata.origin !== 'CJS' ||
         'source' in deep.metadata || deep.metadata.count !== 7 ||
         deep.metadata.region !== 'us' || 'private' in deep.metadata ||
-        artifact.bindings.length !== 0) {
+        artifact.bindings.length !== 0 || collectionValue[0].count !== 8) {
         throw new Error('CommonJS package entrypoints returned an invalid result');
     }
 `;

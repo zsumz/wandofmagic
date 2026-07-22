@@ -4,6 +4,9 @@ export type PathSegment = string | number;
 /** A normalized non-empty path rooted at a record field. */
 export type FieldPath = readonly [string, ...PathSegment[]];
 
+/** A public diagnostic path rooted at either a record field or collection index. */
+export type DataPath = readonly [PathSegment, ...PathSegment[]];
+
 /** A strict record-rooted operation path within the shared eight-segment budget. */
 export type Path =
     | readonly [string, PathSegment, PathSegment, PathSegment, PathSegment, PathSegment, PathSegment, PathSegment]

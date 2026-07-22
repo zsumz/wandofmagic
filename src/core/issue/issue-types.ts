@@ -1,4 +1,4 @@
-import type { FieldPath } from '../path/path.js';
+import type { DataPath } from '../path/path.js';
 import type { StepKind } from '../plan/step-kind.js';
 
 /** Stable issue codes form part of the public API. */
@@ -22,7 +22,7 @@ export interface WandIssue {
     readonly code: WandIssueCode;
     readonly details?: Readonly<Record<string, unknown>>;
     readonly message: string;
-    readonly path?: FieldPath;
+    readonly path?: DataPath;
     readonly step?: IssueStep;
 }
 

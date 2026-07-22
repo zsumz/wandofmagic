@@ -1,4 +1,4 @@
-import type { WandChange } from 'wandofmagic';
+import type { DataPath, WandChange } from 'wandofmagic';
 
 import { assertNever } from './assert-never.js';
 
@@ -23,3 +23,6 @@ function readChange(change: WandChange): unknown {
 }
 
 void readChange;
+
+const collectionPath: DataPath = [3, 'profile', 'name'];
+void collectionPath;

@@ -1,4 +1,4 @@
-import type { FieldPath } from '../path/path.js';
+import type { DataPath } from '../path/path.js';
 
 interface BaseChange {
     readonly stepId: string;
@@ -6,53 +6,53 @@ interface BaseChange {
 
 interface RenameChange extends BaseChange {
     readonly kind: 'rename';
-    readonly from: FieldPath;
-    readonly to: FieldPath;
+    readonly from: DataPath;
+    readonly to: DataPath;
 }
 
 interface MoveChange extends BaseChange {
     readonly kind: 'move';
-    readonly from: FieldPath;
-    readonly to: FieldPath;
+    readonly from: DataPath;
+    readonly to: DataPath;
 }
 
 interface TrimChange extends BaseChange {
     readonly kind: 'trim';
-    readonly path: FieldPath;
+    readonly path: DataPath;
 }
 
 interface CoerceChange extends BaseChange {
     readonly kind: 'coerce';
     readonly coercer: string;
     readonly fromType: string;
-    readonly path: FieldPath;
+    readonly path: DataPath;
     readonly toType: string;
 }
 
 interface DefaultChange extends BaseChange {
     readonly kind: 'default';
-    readonly path: FieldPath;
+    readonly path: DataPath;
 }
 
 interface DeriveChange extends BaseChange {
     readonly kind: 'derive';
-    readonly path: FieldPath;
-    readonly sources: readonly FieldPath[];
+    readonly path: DataPath;
+    readonly sources: readonly DataPath[];
 }
 
 interface OmitChange extends BaseChange {
     readonly kind: 'omit';
-    readonly path: FieldPath;
+    readonly path: DataPath;
 }
 
 interface SetChange extends BaseChange {
     readonly kind: 'set';
-    readonly path: FieldPath;
+    readonly path: DataPath;
 }
 
 interface TransformChange extends BaseChange {
     readonly kind: 'transform';
-    readonly path: FieldPath;
+    readonly path: DataPath;
 }
 
 /** A privacy-safe receipt entry. Raw field values are never included. */
