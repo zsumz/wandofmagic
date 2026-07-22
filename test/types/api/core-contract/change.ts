@@ -12,6 +12,8 @@ function readChange(change: WandChange): unknown {
         case 'transform':
         case 'trim':
             return [change.path, change.stepId];
+        case 'pick':
+            return [change.paths, change.stepId];
         case 'derive':
             return [change.path, change.sources, change.stepId];
         case 'copy':

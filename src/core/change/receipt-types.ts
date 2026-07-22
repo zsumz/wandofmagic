@@ -51,6 +51,11 @@ interface OmitChange extends BaseChange {
     readonly path: DataPath;
 }
 
+interface PickChange extends BaseChange {
+    readonly kind: 'pick';
+    readonly paths: readonly DataPath[];
+}
+
 interface SetChange extends BaseChange {
     readonly kind: 'set';
     readonly path: DataPath;
@@ -69,6 +74,7 @@ export type WandChange =
     | DeriveChange
     | MoveChange
     | OmitChange
+    | PickChange
     | RenameChange
     | SetChange
     | TransformChange

@@ -10,6 +10,7 @@ function readStepKind(kind: StepKind): string {
         case 'derive':
         case 'move':
         case 'omit':
+        case 'pick':
         case 'rename':
         case 'set':
         case 'transform':

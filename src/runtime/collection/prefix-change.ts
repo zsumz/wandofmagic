@@ -18,6 +18,11 @@ export function prefixCollectionChange(index: number, change: WandChange): WandC
                 from: prefixCollectionPath(index, change.from),
                 to: prefixCollectionPath(index, change.to),
             });
+        case 'pick':
+            return freezeChange({
+                ...change,
+                paths: change.paths.map((path) => prefixCollectionPath(index, path)),
+            });
         case 'coerce':
         case 'default':
         case 'omit':

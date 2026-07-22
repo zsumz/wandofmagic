@@ -35,7 +35,8 @@ describe('root collection execution', () => {
         expect(result.value).toEqual(expected);
         expect(1 in result.value).toBe(false);
         expect(result.changes.map((change) =>
-            'path' in change ? change.path : change.from)).toEqual([
+            'path' in change ? change.path : 'from' in change ? change.from : change.paths[0],
+        )).toEqual([
             [0, 'name'],
             [0, 'age'],
             [2, 'name'],

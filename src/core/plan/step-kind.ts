@@ -6,6 +6,7 @@ export type StepKind =
     | 'derive'
     | 'move'
     | 'omit'
+    | 'pick'
     | 'rename'
     | 'set'
     | 'transform'

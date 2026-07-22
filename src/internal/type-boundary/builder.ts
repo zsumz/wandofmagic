@@ -8,6 +8,7 @@ import type { PathInput } from '../../core/path/path.js';
 import type { CoerceBuilderBoundary } from './builder/coerce-builder-boundary.js';
 import type { DefaultBuilderBoundary } from './builder/default-builder-boundary.js';
 import type { OmitBuilderBoundary } from './builder/omit-builder-boundary.js';
+import type { PickBuilderBoundary } from './builder/pick-builder-boundary.js';
 import type { TransformBuilderBoundary } from './builder/transform-builder-boundary.js';
 import type { ErasedTransform } from './callback.js';
 
@@ -19,6 +20,16 @@ export function invokeBuilderOmit<Output extends object>(
     options: StepOptions,
 ): Output {
     return (builder as OmitBuilderBoundary).omit(paths, options) as Output;
+}
+
+/** Invoke a pick overload after its public path-list types have already been checked. */
+// eslint-disable-next-line @typescript-eslint/no-unnecessary-type-parameters -- The checked overload selects the returned builder type.
+export function invokeBuilderPick<Output extends object>(
+    builder: object,
+    paths: readonly PathInput[],
+    options: StepOptions,
+): Output {
+    return (builder as PickBuilderBoundary).pick(paths, options) as Output;
 }
 
 /** Invoke a default overload after its public path and fallback types have already been checked. */

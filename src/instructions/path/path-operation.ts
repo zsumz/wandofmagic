@@ -22,6 +22,12 @@ export interface OmitPathsInstruction {
     readonly paths: ReadonlyArray<readonly [string, ...Array<string | number>]>;
 }
 
+export interface PickInstruction {
+    readonly id: string;
+    readonly kind: 'pick';
+    readonly paths: ReadonlyArray<readonly [string, ...Array<string | number>]>;
+}
+
 export interface MoveInstruction {
     readonly conflict: 'error' | 'overwrite' | 'preserve';
     readonly destination: readonly [string, ...Array<string | number>];
@@ -62,5 +68,6 @@ export type OperationInstruction =
     | FlatOperationInstruction
     | MoveInstruction
     | OmitPathsInstruction
+    | PickInstruction
     | SetInstruction
     | TransformPathInstruction;

@@ -7,13 +7,15 @@ export function compileFlatProgram(steps: readonly ExecutableStep[]): FlatProgra
     if (instructions.some((instruction) =>
         instruction.kind === 'coerce-path' || instruction.kind === 'copy' ||
         instruction.kind === 'default-path' || instruction.kind === 'move' ||
-        instruction.kind === 'omit-paths' || instruction.kind === 'set' ||
+        instruction.kind === 'omit-paths' || instruction.kind === 'pick' ||
+        instruction.kind === 'set' ||
         instruction.kind === 'transform-path')) {
         return undefined;
     }
     return Object.freeze(instructions.filter((instruction) =>
         instruction.kind !== 'coerce-path' && instruction.kind !== 'copy' &&
         instruction.kind !== 'default-path' && instruction.kind !== 'move' &&
-        instruction.kind !== 'omit-paths' && instruction.kind !== 'set' &&
+        instruction.kind !== 'omit-paths' && instruction.kind !== 'pick' &&
+        instruction.kind !== 'set' &&
         instruction.kind !== 'transform-path'));
 }

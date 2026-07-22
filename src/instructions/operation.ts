@@ -4,6 +4,7 @@ export type {
     DefaultPathInstruction,
     MoveInstruction,
     OmitPathsInstruction,
+    PickInstruction,
     OperationInstruction,
     SetInstruction,
     TransformPathInstruction,
