@@ -79,3 +79,21 @@ export type AppendMovePathTypeOperations<
         NormalizedPathInput<Destination>,
         Moved
     >;
+
+/** Append a copy while preserving conditional no-op branches without changing the source. */
+export type AppendCopyPathTypeOperations<
+    Program extends readonly PathTypeOperation[],
+    Destination extends PathInput,
+    Copied,
+    Conditional extends boolean,
+> = Conditional extends true
+    ? AppendPathTypeOperation<Program, {
+        readonly kind: 'optional-add';
+        readonly path: NormalizedPathInput<Destination>;
+        readonly replacement: Copied;
+    }>
+    : AppendSetPathTypeOperation<
+        Program,
+        NormalizedPathInput<Destination>,
+        Copied
+    >;

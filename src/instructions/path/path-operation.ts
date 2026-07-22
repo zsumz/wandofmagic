@@ -31,6 +31,15 @@ export interface MoveInstruction {
     readonly source: readonly [string, ...Array<string | number>];
 }
 
+export interface CopyInstruction {
+    readonly conflict: 'error' | 'overwrite' | 'preserve';
+    readonly destination: readonly [string, ...Array<string | number>];
+    readonly id: string;
+    readonly kind: 'copy';
+    readonly missing: 'error' | 'skip';
+    readonly source: readonly [string, ...Array<string | number>];
+}
+
 export interface SetInstruction {
     readonly id: string;
     readonly kind: 'set';
@@ -48,6 +57,7 @@ export interface TransformPathInstruction {
 
 export type OperationInstruction =
     | CoercePathInstruction
+    | CopyInstruction
     | DefaultPathInstruction
     | FlatOperationInstruction
     | MoveInstruction

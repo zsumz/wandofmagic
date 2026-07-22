@@ -10,6 +10,7 @@ export function prefixCollectionChange(index: number, change: WandChange): WandC
                 path: prefixCollectionPath(index, change.path),
                 sources: change.sources.map((path) => prefixCollectionPath(index, path)),
             });
+        case 'copy':
         case 'move':
         case 'rename':
             return freezeChange({

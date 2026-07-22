@@ -1,5 +1,7 @@
 export type { InputPolicy, ReceiptPolicy, RunOptions } from './execution/run-options.js';
 export type {
+    CopyConflictPolicy,
+    CopyOptions,
     MissingOptions,
     MissingPolicy,
     MoveConflictPolicy,

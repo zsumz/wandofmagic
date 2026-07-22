@@ -1,5 +1,6 @@
 export type {
     CoercePathInstruction,
+    CopyInstruction,
     DefaultPathInstruction,
     MoveInstruction,
     OmitPathsInstruction,

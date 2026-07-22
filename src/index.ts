@@ -8,6 +8,8 @@ export type { SpellDescription, StepDescription } from './core/description.js';
 export { PlanError, type PlanErrorCode, WandError } from './core/errors.js';
 export type { WandIssue, WandIssueCode } from './core/issue.js';
 export type {
+    CopyConflictPolicy,
+    CopyOptions,
     InputPolicy,
     MissingOptions,
     MissingPolicy,

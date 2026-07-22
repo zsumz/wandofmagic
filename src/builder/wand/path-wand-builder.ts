@@ -37,7 +37,7 @@ import type {
 import type { SafePathInput } from '../../types/path/input.js';
 import type { PathTypeOperation } from '../../types/path-program/operation.js';
 import type { DefaultValueGuard } from '../../types/object/field.js';
-import { CoerceWandBuilder } from './coerce-wand-builder.js';
+import { CopyWandBuilder } from './copy-wand-builder.js';
 import type { SpellBuilder } from '../spell/spell-builder.js';
 import type { WandBuilder } from './wand-builder.js';
 
@@ -46,7 +46,7 @@ export abstract class PathWandBuilder<
     Input extends object,
     Current extends object,
     Program extends readonly PathTypeOperation[],
-> extends CoerceWandBuilder<Input, Current, Program> {
+> extends CopyWandBuilder<Input, Current, Program> {
     /** Apply a fallback only when a safe tuple path or top-level field is absent or undefined. */
     public default<
         const OperationPath extends Path,

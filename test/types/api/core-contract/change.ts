@@ -14,6 +14,7 @@ function readChange(change: WandChange): unknown {
             return [change.path, change.stepId];
         case 'derive':
             return [change.path, change.sources, change.stepId];
+        case 'copy':
         case 'move':
         case 'rename':
             return [change.from, change.stepId, change.to];

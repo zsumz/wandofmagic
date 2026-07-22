@@ -16,6 +16,12 @@ interface MoveChange extends BaseChange {
     readonly to: DataPath;
 }
 
+interface CopyChange extends BaseChange {
+    readonly kind: 'copy';
+    readonly from: DataPath;
+    readonly to: DataPath;
+}
+
 interface TrimChange extends BaseChange {
     readonly kind: 'trim';
     readonly path: DataPath;
@@ -58,6 +64,7 @@ interface TransformChange extends BaseChange {
 /** A privacy-safe receipt entry. Raw field values are never included. */
 export type WandChange =
     | CoerceChange
+    | CopyChange
     | DefaultChange
     | DeriveChange
     | MoveChange

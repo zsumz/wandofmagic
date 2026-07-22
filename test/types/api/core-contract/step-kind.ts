@@ -5,6 +5,7 @@ import { assertNever } from './assert-never.js';
 function readStepKind(kind: StepKind): string {
     switch (kind) {
         case 'coerce':
+        case 'copy':
         case 'default':
         case 'derive':
         case 'move':
