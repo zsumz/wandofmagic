@@ -10,7 +10,9 @@ export function emitTrimPaths(
     state: EmitterState,
 ): readonly string[] {
     const suffix = String(operationIndex);
-    const lines: string[] = [];
+    const parentGroups = groupPathParents(instruction.paths);
+    const lines: string[] = parentGroups.map((_, index) =>
+        `        let $trimParent${suffix}_${String(index)};`);
     for (let index = 0; index < instruction.paths.length; index += 1) {
         const path = instruction.paths[index];
         if (path === undefined) {
@@ -38,10 +40,6 @@ export function emitTrimPaths(
         })}`);
         lines.push('        }');
     }
-    const staged = `$trimStaged${suffix}`;
-    const changedPaths = `$trimChangedPaths${suffix}`;
-    lines.push(`        let ${staged} = $value;`);
-    lines.push(`        const ${changedPaths} = [];`);
     for (let index = 0; index < instruction.paths.length; index += 1) {
         const path = instruction.paths[index];
         if (path === undefined) {
@@ -51,26 +49,63 @@ export function emitTrimPaths(
         const trimmed = `$pathTrimmed${suffix}_${String(index)}`;
         const write = `$trimPathWrite${suffix}_${String(index)}`;
         const pathLiteral = pathSource(path, state);
+        const parentIndex = parentGroups.findIndex((parent) => sameParent(parent, path));
+        const parent = parentIndex < 0
+            ? undefined
+            : `$trimParent${suffix}_${String(parentIndex)}`;
+        const writeIndent = parent === undefined ? '                ' : '                    ';
+        const failureIndent = `${writeIndent}    `;
         lines.push(`        if (${read}.status === "found" && typeof ${read}.value === "string") {`);
         lines.push(`            const ${trimmed} = ${read}.value.trim();`);
         lines.push(`            if (${trimmed} !== ${read}.value) {`);
+        if (parent !== undefined) {
+            lines.push(`                if (${parent} === undefined) {`);
+        }
         lines.push(
-            `                const ${write} = $commitRead(`
-            + `${staged}, ${pathLiteral}, ${read}, ${trimmed}, $ownership);`,
+            `${writeIndent}const ${write} = $commitRead(`
+            + `$value, ${pathLiteral}, ${read}, ${trimmed}, $ownership);`,
         );
-        lines.push(`                if (!${write}.ok) {`);
+        lines.push(`${writeIndent}if (!${write}.ok) {`);
         lines.push(
-            `                    $failIssue($WandError, ${write}.issue,`
+            `${failureIndent}$failIssue($WandError, ${write}.issue,`
             + ` ${sourceString(instruction.id)}, "trim");`,
         );
-        lines.push('                }');
-        lines.push(`                ${staged} = ${write}.value ?? ${staged};`);
-        lines.push(`                ${changedPaths}.push(${pathLiteral});`);
+        lines.push(`${writeIndent}}`);
+        if (parent !== undefined) {
+            lines.push(`                    ${parent} = ${write}.container;`);
+            lines.push('                } else {');
+            lines.push(
+                `                    $defineField(${parent},`
+                + ` ${JSON.stringify(path[path.length - 1])}, ${trimmed});`,
+            );
+            lines.push('                }');
+        }
         lines.push('            }');
         lines.push('        }');
     }
-    lines.push(`        if (${changedPaths}.length > 0) {`);
-    lines.push(`            $commitRoots($value, ${staged}, ${changedPaths});`);
-    lines.push('        }');
     return lines;
+}
+
+type PathParent = ReadonlyArray<number | string>;
+
+function groupPathParents(paths: TrimPathsInstruction['paths']): readonly PathParent[] {
+    const parents: PathParent[] = [];
+    for (const path of paths) {
+        const parent = path.slice(0, -1);
+        if (paths.filter((candidate) => sameParent(parent, candidate)).length > 1
+            && !parents.some((candidate) => samePath(candidate, parent))) {
+            parents.push(parent);
+        }
+    }
+    return parents;
+}
+
+function sameParent(parent: PathParent, path: TrimPathsInstruction['paths'][number]): boolean {
+    return parent.length === path.length - 1
+        && parent.every((segment, index) => segment === path[index]);
+}
+
+function samePath(left: PathParent, right: PathParent): boolean {
+    return left.length === right.length
+        && left.every((segment, index) => segment === right[index]);
 }
