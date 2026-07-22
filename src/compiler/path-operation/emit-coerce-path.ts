@@ -15,7 +15,7 @@ export function emitCoercePath(
     const path = pathSource(instruction.path, state);
     const read = `$coercePathRead${suffix}`;
     const current = `$current${suffix}`;
-    const context: PathCoercionContext = { current, instruction, operationIndex, path };
+    const context: PathCoercionContext = { current, instruction, operationIndex, path, read };
     const lines = [
         `        const ${read} = ${readPathSource('$value', instruction.path, state)};`,
         `        if (${read}.status === "failed") {`,

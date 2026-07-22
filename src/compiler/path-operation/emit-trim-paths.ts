@@ -55,8 +55,8 @@ export function emitTrimPaths(
         lines.push(`            const ${trimmed} = ${read}.value.trim();`);
         lines.push(`            if (${trimmed} !== ${read}.value) {`);
         lines.push(
-            `                const ${write} = $setPath(`
-            + `${staged}, ${pathLiteral}, ${trimmed}, $ownership);`,
+            `                const ${write} = $commitRead(`
+            + `${staged}, ${pathLiteral}, ${read}, ${trimmed}, $ownership);`,
         );
         lines.push(`                if (!${write}.ok) {`);
         lines.push(
@@ -64,7 +64,7 @@ export function emitTrimPaths(
             + ` ${sourceString(instruction.id)}, "trim");`,
         );
         lines.push('                }');
-        lines.push(`                ${staged} = ${write}.value;`);
+        lines.push(`                ${staged} = ${write}.value ?? ${staged};`);
         lines.push(`                ${changedPaths}.push(${pathLiteral});`);
         lines.push('            }');
         lines.push('        }');

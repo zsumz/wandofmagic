@@ -56,15 +56,18 @@ export function emitMove(
         }
         lines.push('            } else {');
     }
-    lines.push(`                const ${written} = $setPath(`);
-    lines.push(`                    $value, ${destination}, ${sourceRead}.value, $ownership,`);
+    lines.push(`                const ${written} = $commitRead(`);
+    lines.push(
+        `                    $value, ${destination}, ${destinationRead},`
+        + ` ${sourceRead}.value, $ownership,`,
+    );
     lines.push('                );');
     lines.push(`                if (!${written}.ok) {`);
     lines.push(`                    $failIssue($WandError, ${written}.issue, ${step.id}, "move");`);
     lines.push('                }');
     lines.push(
-        `                const ${deleted} = $deletePath(`
-        + `${written}.value, ${source}, $ownership);`,
+        `                const ${deleted} = $deleteRead(`
+        + `$value, ${source}, ${sourceRead}, $ownership);`,
     );
     lines.push(`                if (!${deleted}.ok) {`);
     lines.push(`                    $failIssue($WandError, ${deleted}.issue, ${step.id}, "move");`);

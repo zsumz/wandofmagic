@@ -7,6 +7,7 @@ export interface PathCoercionContext {
     readonly instruction: CoercePathInstruction;
     readonly operationIndex: number;
     readonly path: string;
+    readonly read: string;
 }
 
 export function coercionFailureLines(
@@ -32,8 +33,8 @@ export function convertedAssignmentLines(
     const write = `$coercePathWrite${String(context.operationIndex)}`;
     return [
         `        if (!Object.is(${context.current}, ${converted})) {`,
-        `            const ${write} = $commitSet(`,
-        `                $value, ${context.path}, ${converted}, $ownership,`,
+        `            const ${write} = $commitRead(`,
+        `                $value, ${context.path}, ${context.read}, ${converted}, $ownership,`,
         '            );',
         `            if (!${write}.ok) {`,
         `                $failIssue($WandError, ${write}.issue,`

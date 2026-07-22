@@ -55,8 +55,11 @@ export function emitCopy(
         }
         lines.push('            } else {');
     }
-    lines.push(`                const ${write} = $commitSet(`);
-    lines.push(`                    $value, ${destination}, ${sourceRead}.value, $ownership,`);
+    lines.push(`                const ${write} = $commitRead(`);
+    lines.push(
+        `                    $value, ${destination}, ${destinationRead},`
+        + ` ${sourceRead}.value, $ownership,`,
+    );
     lines.push('                );');
     lines.push(`                if (!${write}.ok) {`);
     lines.push(`                    $failIssue($WandError, ${write}.issue, ${step.id}, "copy");`);

@@ -82,8 +82,8 @@ export function emitDerivePath(
     })}`);
     lines.push('        }');
     lines.push(
-        `        const ${write} = $commitSet(`
-        + `$value, ${destination}, ${derived}, $ownership);`,
+        `        const ${write} = $commitRead(`
+        + `$value, ${destination}, ${destinationRead}, ${derived}, $ownership);`,
     );
     lines.push(`        if (!${write}.ok) {`);
     lines.push(`            $failIssue($WandError, ${write}.issue, ${step.id}, "derive");`);

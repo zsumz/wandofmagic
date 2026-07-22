@@ -90,7 +90,8 @@ function emitReadPathProgram(path: FieldPath, pathIndex: number): readonly strin
         const length = String(index + 1);
         lines.push(
             `    const ${read} = $readField(`
-            + `${container}, ${JSON.stringify(path[index])}, ${pathReference}, ${length});`,
+            + `${container}, ${JSON.stringify(path[index])}, ${pathReference}, ${length}`
+            + `${index === path.length - 1 ? ', true' : ''});`,
         );
         lines.push(`    if (${read}.status !== "found") {`);
         lines.push(`        return ${read};`);
