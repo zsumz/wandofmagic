@@ -9,6 +9,7 @@ describe('packed package surface', () => {
         expect(expectedPackageEntries).toEqual([
             'package/LICENSE',
             'package/README.md',
+            'package/magicwand-logo.svg',
             'package/dist/coerce.cjs',
             'package/dist/coerce.d.cts',
             'package/dist/coerce.d.ts',
