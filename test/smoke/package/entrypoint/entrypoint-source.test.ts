@@ -12,14 +12,14 @@ describe('package entrypoint smoke source', () => {
         [
             'ESM',
             esmEntrypointSmoke,
-            1_806,
-            '4ad9ef126520beb297c0f4cd155aa0b70f87d340b1d49bb49af29e748afb2b7d',
+            2_602,
+            'd0ff992bca10ce5b3d40a9f8d8dce8aad137f84c119c3e3282ac38a8e5cb82da',
         ],
         [
             'CommonJS',
             commonJsEntrypointSmoke,
-            1_471,
-            '213cf268f43d2f3457d78dee8282f3ace9d08d6047687929410c6036022a7b60',
+            2_280,
+            '6d6e53e0237648c3336e99ee1c3f4df50f901d564b39e2b2bb45e6be09c6f7c0',
         ],
     ])('keeps the %s program byte-identical', (_format, source, bytes, sha256) => {
         expect(Buffer.byteLength(source)).toBe(bytes);
