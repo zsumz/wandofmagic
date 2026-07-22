@@ -8,6 +8,7 @@ import type { Spell } from '../../core/execution/spell.js';
 import { compileFlatProgram } from './compile-flat-program.js';
 import { compilePlan, type CompiledPlan } from './compile-plan.js';
 import { registerFlatProgram } from './flat-program-registry.js';
+import { registerOperationProgram } from './operation-program-registry.js';
 import { executePlan } from '../execute-plan/execute-plan.js';
 import { runPlan } from '../execute-plan/run-plan.js';
 
@@ -23,6 +24,10 @@ implements Spell<Input, Output> {
         if (flatProgram !== undefined) {
             registerFlatProgram(this, flatProgram);
         }
+        registerOperationProgram(
+            this,
+            Object.freeze(frozenSteps.map((step) => step.instruction)),
+        );
         this.#description = createSpellDescription(
             metadata,
             frozenSteps.map((step) => step.describe()),

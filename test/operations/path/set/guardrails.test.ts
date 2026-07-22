@@ -1,5 +1,4 @@
 import { describe, expect, it } from 'vitest';
-import { CompilerError } from '../../../../src/compiler/error/compiler-error.js';
 import { emitTrustedMapperModule } from '../../../../src/compiler/trusted-mapper/emit-trusted-mapper.js';
 import type { PathInput } from '../../../../src/core/path/path.js';
 import { spell } from '../../../../src/index.js';
@@ -15,9 +14,9 @@ describe('deep set guardrails', () => {
         );
     });
 
-    it('fails closed in the static flat compiler', () => {
+    it('supports static emission', () => {
         const deep = spell<{ value: string }>().set(['metadata', 'source'], 'api').build();
 
-        expect(() => emitTrustedMapperModule(deep)).toThrow(CompilerError);
+        expect(emitTrustedMapperModule(deep).mode).toBe('trusted-discard');
     });
 });

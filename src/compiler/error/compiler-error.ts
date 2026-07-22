@@ -1,6 +1,4 @@
-export type CompilerErrorCode =
-    | 'unsupported_program'
-    | 'unsupported_spell';
+export type CompilerErrorCode = 'unsupported_spell';
 
 /** Thrown when a spell cannot be represented by the static trusted mapper emitter. */
 export class CompilerError extends Error {

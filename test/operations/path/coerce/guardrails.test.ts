@@ -1,13 +1,12 @@
 import { describe, expect, it } from 'vitest';
 
 import { number } from '../../../../src/coerce/builtin/number.js';
-import { CompilerError } from '../../../../src/compiler/error/compiler-error.js';
 import { emitTrustedMapperModule } from '../../../../src/compiler/trusted-mapper/emit-trusted-mapper.js';
 import { spell } from '../../../../src/index.js';
 import { expectPlanError } from '../../../support/expect-plan-error.js';
 
 describe('deep coerce guardrails', () => {
-    it('rejects cycles and unsafe paths and fails closed in the static compiler', () => {
+    it('rejects cycles and unsafe paths and supports static emission', () => {
         interface Cyclic {
             self?: Cyclic;
             value: string;
@@ -33,6 +32,6 @@ describe('deep coerce guardrails', () => {
         const deep = spell<{ profile: { count: string } }>()
             .coerce(['profile', 'count'], number())
             .build();
-        expect(() => emitTrustedMapperModule(deep)).toThrow(CompilerError);
+        expect(emitTrustedMapperModule(deep).mode).toBe('trusted-discard');
     });
 });

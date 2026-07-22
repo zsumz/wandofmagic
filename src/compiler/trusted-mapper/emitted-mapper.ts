@@ -1,4 +1,4 @@
-export type MapperBindingKind = 'coercer' | 'default' | 'derive' | 'transform';
+export type MapperBindingKind = 'coercer' | 'default' | 'derive' | 'set' | 'transform';
 
 export interface MapperBindingDescription {
     readonly index: number;

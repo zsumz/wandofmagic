@@ -1,12 +1,11 @@
 import { describe, expect, it } from 'vitest';
 
-import { CompilerError } from '../../../../src/compiler/error/compiler-error.js';
 import { emitTrustedMapperModule } from '../../../../src/compiler/trusted-mapper/emit-trusted-mapper.js';
 import { spell } from '../../../../src/index.js';
 import { expectPlanError } from '../../../support/expect-plan-error.js';
 
 describe('deep omit guardrails', () => {
-    it('rejects cycles and unsafe paths and fails closed in the static compiler', () => {
+    it('rejects cycles and unsafe paths and supports static emission', () => {
         interface Cyclic {
             self?: Cyclic;
             secret?: string;
@@ -30,6 +29,6 @@ describe('deep omit guardrails', () => {
             'dangerous_key',
         );
         const deep = spell<{ node: Cyclic }>().omit([['node', 'secret']]).build();
-        expect(() => emitTrustedMapperModule(deep)).toThrow(CompilerError);
+        expect(emitTrustedMapperModule(deep).mode).toBe('trusted-discard');
     });
 });
