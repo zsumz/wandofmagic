@@ -4,7 +4,9 @@ import { getCollectionItemSpell } from '../../runtime/collection/collection-item
 import { CompilerError } from '../error/compiler-error.js';
 import { emitOperation } from '../emitter/emit-operation.js';
 import { createEmitterState } from '../emitter/emitter-state.js';
+import { operationReadPaths } from '../emitter/operation-read-paths.js';
 import { emitPathDeclarations } from '../emitter/path-source.js';
+import { beginReadPrefixScope, endReadPrefixScope } from '../emitter/read-prefix-scope.js';
 import type { TrustedMapperModule } from './emitted-mapper.js';
 import { collectionRuntimeSource } from '../generated-runtime/collection-runtime-source.js';
 import { generatedRuntimeSource } from '../generated-runtime/generated-runtime-source.js';
@@ -35,7 +37,13 @@ export function emitTrustedMapperModule<Input extends object, Output extends obj
     for (let index = 0; index < operations.length; index += 1) {
         const instruction = operations[index];
         if (instruction !== undefined) {
+            operationLines.push(...beginReadPrefixScope(
+                operationReadPaths(instruction),
+                index,
+                state,
+            ));
             operationLines.push(...emitOperation(instruction, index, state));
+            endReadPrefixScope(state);
         }
     }
     const includeIsoDate = operations.some((instruction) =>
