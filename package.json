@@ -62,6 +62,7 @@
   "files": [
     "dist",
     "LICENSE",
+    "magicwand-logo.svg",
     "README.md"
   ],
   "packageManager": "npm@10.9.8",

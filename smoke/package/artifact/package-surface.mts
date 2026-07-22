@@ -10,6 +10,7 @@ const publicEntrypointArtifacts = publicEntrypoints.flatMap(({ buildName }) => [
 export const expectedPackageEntries = [
     'package/LICENSE',
     'package/README.md',
+    'package/magicwand-logo.svg',
     ...publicEntrypointArtifacts,
     'package/dist/types.d.cts',
     'package/dist/types.d.ts',
