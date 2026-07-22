@@ -61,6 +61,12 @@ export interface TransformPathInstruction {
     readonly path: readonly [string, ...Array<string | number>];
 }
 
+export interface TrimPathsInstruction {
+    readonly id: string;
+    readonly kind: 'trim-paths';
+    readonly paths: ReadonlyArray<readonly [string, ...Array<string | number>]>;
+}
+
 export type OperationInstruction =
     | CoercePathInstruction
     | CopyInstruction
@@ -70,4 +76,5 @@ export type OperationInstruction =
     | OmitPathsInstruction
     | PickInstruction
     | SetInstruction
-    | TransformPathInstruction;
+    | TransformPathInstruction
+    | TrimPathsInstruction;

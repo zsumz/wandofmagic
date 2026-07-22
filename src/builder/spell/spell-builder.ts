@@ -10,7 +10,6 @@ import type { Spell } from '../../core/execution/spell.js';
 import { createDeriveStep } from '../../operations/flat/derive/create-derive-step.js';
 import { createMoveStep } from '../../operations/path/move/create-move-step.js';
 import { createRenameStep } from '../../operations/flat/rename/create-rename-step.js';
-import { createTrimStep } from '../../operations/flat/trim/create-trim-step.js';
 import { CompiledSpell } from '../../runtime/compiled-spell/compiled-spell.js';
 import type { SynchronousCallbackValue } from '../../types/builder/callback-value.js';
 import type {
@@ -24,7 +23,6 @@ import type {
     BuilderRenameInput,
     BuilderRenameMapping,
     BuilderRenameOutput,
-    BuilderTrimKey,
 } from '../../types/builder/field-output.js';
 import type { PathTypeOperation } from '../../types/path-program/operation.js';
 import type {
@@ -58,13 +56,6 @@ export class SpellBuilder<Input extends object, Current extends object,
         const id = this.nextId('rename', options.id);
         return this.append<BuilderRenameOutput<BuilderOutput<Current, Program>, Mapping>>(
             createRenameStep(mapping, id));
-    }
-    public trim(
-        keys: ReadonlyArray<BuilderTrimKey<BuilderOutput<Current, Program>>>,
-        options: StepOptions = {},
-    ): SpellBuilder<Input, BuilderOutput<Current, Program>> {
-        const id = this.nextId('trim', options.id);
-        return this.append<BuilderOutput<Current, Program>>(createTrimStep(keys, id));
     }
     public derive<
         const Key extends string,

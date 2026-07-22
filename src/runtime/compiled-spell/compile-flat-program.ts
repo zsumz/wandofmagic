@@ -9,7 +9,7 @@ export function compileFlatProgram(steps: readonly ExecutableStep[]): FlatProgra
         instruction.kind === 'default-path' || instruction.kind === 'move' ||
         instruction.kind === 'omit-paths' || instruction.kind === 'pick' ||
         instruction.kind === 'set' ||
-        instruction.kind === 'transform-path')) {
+        instruction.kind === 'transform-path' || instruction.kind === 'trim-paths')) {
         return undefined;
     }
     return Object.freeze(instructions.filter((instruction) =>
@@ -17,5 +17,5 @@ export function compileFlatProgram(steps: readonly ExecutableStep[]): FlatProgra
         instruction.kind !== 'default-path' && instruction.kind !== 'move' &&
         instruction.kind !== 'omit-paths' && instruction.kind !== 'pick' &&
         instruction.kind !== 'set' &&
-        instruction.kind !== 'transform-path'));
+        instruction.kind !== 'transform-path' && instruction.kind !== 'trim-paths'));
 }

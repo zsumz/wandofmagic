@@ -18,7 +18,6 @@ import type {
     BuilderRenameInput,
     BuilderRenameMapping,
     BuilderRenameOutput,
-    BuilderTrimKey,
 } from '../../types/builder/field-output.js';
 import type { PathTypeOperation } from '../../types/path-program/operation.js';
 import type {
@@ -48,14 +47,6 @@ export class WandBuilder<
     ): WandBuilder<Input, BuilderRenameOutput<BuilderOutput<Current, Program>, Mapping>> {
         return this.rebuild(this.builder.rename<Mapping>(mapping, options));
     }
-
-    public trim(
-        keys: ReadonlyArray<BuilderTrimKey<BuilderOutput<Current, Program>>>,
-        options: StepOptions = {},
-    ): WandBuilder<Input, BuilderOutput<Current, Program>> {
-        return this.rebuild(this.builder.trim(keys, options));
-    }
-
     public derive<
         const Key extends string,
         const Dependencies extends BuilderDeriveDependencies<BuilderOutput<Current, Program>>,

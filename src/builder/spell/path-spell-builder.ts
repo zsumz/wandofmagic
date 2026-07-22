@@ -35,7 +35,7 @@ import type { SafePathInput } from '../../types/path/input.js';
 import type { PathTypeOperation } from '../../types/path-program/operation.js';
 import type { DefaultValueGuard } from '../../types/object/field.js';
 import type { BuilderState } from '../state/builder-state.js';
-import { PickSpellBuilder } from './pick-spell-builder.js';
+import { TrimSpellBuilder } from './trim-spell-builder.js';
 import { createDefaultDispatchStep } from './operation-dispatch/default-step.js';
 import { createTransformDispatchStep } from './operation-dispatch/transform-step.js';
 import type { SpellBuilder } from './spell-builder.js';
@@ -45,7 +45,7 @@ export abstract class PathSpellBuilder<
     Input extends object,
     Current extends object,
     Program extends readonly PathTypeOperation[],
-> extends PickSpellBuilder<Input, Current, Program> {
+> extends TrimSpellBuilder<Input, Current, Program> {
     /** Apply a fallback only when a safe tuple path or top-level field is absent or undefined. */
     public default<
         const OperationPath extends Path,

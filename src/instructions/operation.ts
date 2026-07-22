@@ -8,4 +8,5 @@ export type {
     OperationInstruction,
     SetInstruction,
     TransformPathInstruction,
+    TrimPathsInstruction,
 } from './path/path-operation.js';

@@ -10,6 +10,7 @@ import type { DefaultBuilderBoundary } from './builder/default-builder-boundary.
 import type { OmitBuilderBoundary } from './builder/omit-builder-boundary.js';
 import type { PickBuilderBoundary } from './builder/pick-builder-boundary.js';
 import type { TransformBuilderBoundary } from './builder/transform-builder-boundary.js';
+import type { TrimBuilderBoundary } from './builder/trim-builder-boundary.js';
 import type { ErasedTransform } from './callback.js';
 
 /** Invoke an omit overload after its public path-list types have already been checked. */
@@ -63,4 +64,14 @@ export function invokeBuilderTransform<Output extends object>(
     options: MissingOptions<MissingPolicy>,
 ): Output {
     return (builder as TransformBuilderBoundary).transform(path, transform, options) as Output;
+}
+
+/** Invoke a trim overload after its public path-list types have already been checked. */
+// eslint-disable-next-line @typescript-eslint/no-unnecessary-type-parameters -- The checked overload selects the returned builder type.
+export function invokeBuilderTrim<Output extends object>(
+    builder: object,
+    paths: readonly PathInput[],
+    options: StepOptions,
+): Output {
+    return (builder as TrimBuilderBoundary).trim(paths, options) as Output;
 }
