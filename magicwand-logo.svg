@@ -31,16 +31,18 @@
 
   <rect width="1040" height="260" fill="#ffffff"/>
 
-  <g transform="translate(75 32) scale(0.94)">
-    <path d="M146 10C148 21 153 26 164 28C153 30 148 35 146 46C144 35 139 30 128 28C139 26 144 21 146 10Z" fill="#121212"/>
-    <g transform="rotate(-45 88 88)">
-      <path d="M27 88H149" stroke="#121212" stroke-width="22" stroke-linecap="round"/>
-      <path d="M128 88H149" stroke="#ffffff" stroke-width="12" stroke-linecap="round"/>
-      <path d="M128 81V95" stroke="#121212" stroke-width="3"/>
+  <g transform="translate(-7 0)">
+    <g transform="translate(75 32) scale(0.94)">
+      <path d="M146 10C148 21 153 26 164 28C153 30 148 35 146 46C144 35 139 30 128 28C139 26 144 21 146 10Z" fill="#121212"/>
+      <g transform="rotate(-45 88 88)">
+        <path d="M27 88H149" stroke="#121212" stroke-width="22" stroke-linecap="round"/>
+        <path d="M128 88H149" stroke="#ffffff" stroke-width="12" stroke-linecap="round"/>
+        <path d="M128 81V95" stroke="#121212" stroke-width="3"/>
+      </g>
     </g>
-  </g>
 
-  <text class="wordmark" x="252" y="161">magicwand</text>
-  <rect x="260" y="204" width="336" height="4" rx="2" fill="#121212"/>
-  <text class="tagline" x="618" y="212">TYPE-SAFE DATA REPAIR</text>
+    <text class="wordmark" x="252" y="161">magicwand</text>
+    <rect x="260" y="204" width="336" height="4" rx="2" fill="#121212"/>
+    <text class="tagline" x="618" y="212">TYPE-SAFE DATA REPAIR</text>
+  </g>
 </svg>
