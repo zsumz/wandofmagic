@@ -4,6 +4,7 @@ import { buildAndPack } from './package/artifact/build-and-pack.mts';
 import { installPackageFixture } from './package/artifact/install-package-fixture.mts';
 import { commonJsEntrypointSmoke } from './package/entrypoint/commonjs-smoke-source.mts';
 import { esmEntrypointSmoke } from './package/entrypoint/esm-smoke-source.mts';
+import { checkTypeConsumers } from './package/typescript/check-type-consumers.mts';
 
 smoke.suite('wandofmagic package can be packed and imported', { tags: ['package'] }, async (t) => {
     const root = t.repoRoot();
@@ -18,6 +19,7 @@ smoke.suite('wandofmagic package can be packed and imported', { tags: ['package'
         await pkg.toExposeOnly(['.', './coerce', './compiler']);
         await pkg.toHaveTypes(['.', './coerce', './compiler']);
     });
+    await checkTypeConsumers(t, root, fixture);
     await t.step('installed package works through ESM imports', async () => {
         await fixture.node.inline(esmEntrypointSmoke);
     });
