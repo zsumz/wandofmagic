@@ -13,17 +13,18 @@ permissions:
 jobs:
   verify:
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     strategy:
       fail-fast: false
       matrix:
-        node-version: [22, 24]
+        node-version: ['22.18.0', '24']
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: Setup Node
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v6
         with:
           node-version: ${{ matrix.node-version }}
           cache: npm
@@ -32,11 +33,11 @@ jobs:
         run: npm ci
 
       - name: Lint
-        if: matrix.node-version == 24
+        if: matrix.node-version == '24'
         run: npm run lint
 
       - name: Check architecture
-        if: matrix.node-version == 24
+        if: matrix.node-version == '24'
         run: npm run architecture:check
 
       - name: Typecheck source and tests
@@ -49,16 +50,45 @@ jobs:
         run: npm test
 
       - name: Check coverage
-        if: matrix.node-version == 24
+        if: matrix.node-version == '24'
         run: npm run coverage
 
       - name: List package smoke tests
-        if: matrix.node-version == 24
+        if: matrix.node-version == '24'
         run: npm run smoke:list
 
+      - name: Check package conformance
+        if: matrix.node-version == '24'
+        run: npm run check:package:conformance
+
       - name: Run package smoke tests
-        if: matrix.node-version == 24
         run: npm run smoke
 
       - name: Inspect package contents
         run: npm pack --dry-run --json
+
+  minimum-typescript:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Setup Node
+        uses: actions/setup-node@v6
+        with:
+          node-version: '24'
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build with repository TypeScript
+        run: npm run build
+
+      - name: Install minimum TypeScript
+        run: npm install --no-save --ignore-scripts typescript@5.8.3
+
+      - name: Typecheck public API fixtures
+        run: tsc -p tsconfig.types.json
