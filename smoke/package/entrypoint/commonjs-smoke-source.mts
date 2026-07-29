@@ -4,7 +4,10 @@ export const commonJsEntrypointSmoke = `
     const require = createRequire(import.meta.url);
     const { collection, spell, WandError } = require('wandofmagic');
     const { number } = require('wandofmagic/coerce');
-    const { emitTrustedMapperModule } = require('wandofmagic/compiler');
+    const {
+        TRUSTED_MAPPER_FORMAT_VERSION,
+        emitTrustedMapperModule,
+    } = require('wandofmagic/compiler');
     const normalize = spell()
         .rename({ raw_count: 'count' })
         .coerce('count', number({ integer: true }))
@@ -43,6 +46,7 @@ export const commonJsEntrypointSmoke = `
         generatedDeep.metadata.summary !== 'CJS:7' ||
         'source' in deep.metadata || deep.metadata.count !== 7 ||
         deep.metadata.region !== 'us' || 'private' in deep.metadata ||
+        artifact.formatVersion !== TRUSTED_MAPPER_FORMAT_VERSION ||
         artifact.mode !== 'trusted-discard' || collectionValue[0].count !== 8) {
         throw new Error('CommonJS package entrypoints returned an invalid result');
     }

@@ -9,7 +9,7 @@
 <p align="center">
   <a href="#install">Install</a> ·
   <a href="#example">Example</a> ·
-  <a href="#model">Model</a>
+  <a href="#api">API</a>
 </p>
 
 ## Install
@@ -53,6 +53,18 @@ if (result.ok) {
   result.issues; // stable codes, paths, and step metadata
 }
 ```
+
+## API
+
+Use `spell<T>()` for reusable plans, `wand(value)` for one-off repairs, and `collection(plan)`
+to apply a plan to every present array item. Built-in coercers live in `wandofmagic/coerce`.
+
+Plans can trim, coerce, default, transform, rename, set, copy, move, derive, omit, and pick.
+Deep operations use tuples such as `['profile', 'name']` or `['rows', 2, 'label']`, with a
+maximum depth of eight segments.
+
+`wandofmagic/compiler` emits deterministic, versioned ESM for caller-proven trusted inputs. It is a
+build-time optimization; checked execution remains the safe boundary default.
 
 ## Model
 

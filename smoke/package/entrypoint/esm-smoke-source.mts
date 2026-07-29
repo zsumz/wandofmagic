@@ -1,7 +1,10 @@
 export const esmEntrypointSmoke = `
     import { collection, spell, WandError } from 'wandofmagic';
     import { number } from 'wandofmagic/coerce';
-    import { emitTrustedMapperModule } from 'wandofmagic/compiler';
+    import {
+        TRUSTED_MAPPER_FORMAT_VERSION,
+        emitTrustedMapperModule,
+    } from 'wandofmagic/compiler';
 
     const normalize = spell()
         .rename({ raw_count: 'count' })
@@ -49,7 +52,8 @@ export const esmEntrypointSmoke = `
         'private' in deep.metadata) {
         throw new Error('ESM deep operations returned an invalid result');
     }
-    if (artifact.mode !== 'trusted-discard' ||
+    if (artifact.formatVersion !== TRUSTED_MAPPER_FORMAT_VERSION ||
+        artifact.mode !== 'trusted-discard' ||
         !artifact.source.includes('createTrustedMapper')) {
         throw new Error('ESM compiler entrypoint returned an invalid artifact');
     }
