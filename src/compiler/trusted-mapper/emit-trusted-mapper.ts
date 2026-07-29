@@ -7,7 +7,10 @@ import { createEmitterState } from '../emitter/emitter-state.js';
 import { operationReadPaths } from '../emitter/operation-read-paths.js';
 import { emitPathDeclarations } from '../emitter/path-source.js';
 import { beginReadPrefixScope, endReadPrefixScope } from '../emitter/read-prefix-scope.js';
-import type { TrustedMapperModule } from './emitted-mapper.js';
+import {
+    TRUSTED_MAPPER_FORMAT_VERSION,
+    type TrustedMapperModule,
+} from './emitted-mapper.js';
 import { collectionRuntimeSource } from '../generated-runtime/collection-runtime-source.js';
 import { generatedRuntimeSource } from '../generated-runtime/generated-runtime-source.js';
 import { analyzeStructuralProgram } from '../structural-program/analyze-structural-program.js';
@@ -85,6 +88,7 @@ export function emitTrustedMapperModule<Input extends object, Output extends obj
     return Object.freeze({
         bindingDescriptions: Object.freeze([...state.bindingDescriptions]),
         bindings: Object.freeze([...state.bindings]),
+        formatVersion: TRUSTED_MAPPER_FORMAT_VERSION,
         mode: 'trusted-discard',
         source,
     });
