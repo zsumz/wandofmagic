@@ -59,6 +59,6 @@ describe('deep derive failures', () => {
                 ['profile', 'label'],
                 [['profile', 'first'], ['profile', 'first']],
                 ([first]) => first,
-            )).toThrowError(/dependencies must be unique/u);
+            )).toThrow(/dependencies must be unique/u);
     });
 });
