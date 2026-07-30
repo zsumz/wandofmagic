@@ -15,16 +15,21 @@ Reports are especially valuable when they include:
 
 ## Security posture
 
-Wandofmagic treats boundary input as untrusted data. The 1.0 contract requires:
+Wandofmagic treats boundary input as untrusted data. Checked execution is designed to:
 
-- no input mutation
-- no implicit getter execution
-- prototype-pollution path rejection
-- bounded descriptor-only deep traversal with touched-cycle rejection
-- no raw values in receipts or serialized issues
-- zero runtime dependencies in the core package
-- npm trusted publishing with provenance from a public GitHub repository
+- leave the input unchanged
+- avoid implicit getter execution
+- reject prototype-pollution paths
+- reject cycles in any object path an operation touches
+- keep raw values out of receipts and serialized issues
+- keep the core package free of runtime dependencies
 
-Checked execution is the boundary-safe default. The trusted runtime mode and generated mappers are
-unchecked performance contracts for caller-proven own-data records; they must not be used directly
-on proxies, accessors, inherited enumerable properties, or otherwise untrusted input.
+Checked execution is the default. It accepts plain objects and null-prototype objects and inspects
+their property descriptors instead of reading accessors.
+
+Trusted execution and generated mappers skip some of those checks for speed. Use them only when the
+caller guarantees plain records with own enumerable string data properties, no accessors, no
+proxies, no enumerable symbols, and no inherited enumerable properties. Do not use either mode
+directly on untrusted input.
+
+See the [usage guide](./USAGE.md#use-trusted-execution) for an example.

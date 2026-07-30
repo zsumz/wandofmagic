@@ -7,8 +7,11 @@ import {
 describe('packed package surface', () => {
     it('contains only supported runtime and declaration artifacts', () => {
         expect(expectedPackageEntries).toEqual([
+            'package/API.md',
             'package/LICENSE',
             'package/README.md',
+            'package/SECURITY.md',
+            'package/USAGE.md',
             'package/magicwand-logo.svg',
             'package/dist/coerce.cjs',
             'package/dist/coerce.d.cts',

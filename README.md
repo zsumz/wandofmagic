@@ -3,19 +3,21 @@
 </p>
 
 <p align="center">
-  Immutable, type-safe transformations for data at the edge of your application.
+  Clean and reshape TypeScript data without mutating the input.
 </p>
 
 <p align="center">
   <a href="#install">Install</a> ·
   <a href="#example">Example</a> ·
-  <a href="#api">API</a>
+  <a href="#model">Model</a> ·
+  <a href="./USAGE.md">Guide</a> ·
+  <a href="./API.md">API</a>
 </p>
 
 ## Install
 
 ```sh
-npm install wandofmagic
+npm install wandofmagic@alpha
 ```
 
 ## Example
@@ -47,33 +49,58 @@ const result = normalizeUser.safeRun({
 });
 
 if (result.ok) {
-  result.value; // { age?: number; firstName: string }
-  result.changes; // what changed, never field values
+  console.log(result.value);
+  // { age: 37, firstName: 'Ada' }
 } else {
-  result.issues; // stable codes, paths, and step metadata
+  console.error(result.issues);
 }
 ```
 
-## API
-
-Use `spell<T>()` for reusable plans, `wand(value)` for one-off repairs, and `collection(plan)`
-to apply a plan to every present array item. Built-in coercers live in `wandofmagic/coerce`.
-
-Plans can trim, coerce, default, transform, rename, set, copy, move, derive, omit, and pick.
-Deep operations use tuples such as `['profile', 'name']` or `['rows', 2, 'label']`, with a
-maximum depth of eight segments.
-
-`wandofmagic/compiler` emits deterministic, versioned ESM for caller-proven trusted inputs. It is a
-build-time optimization; checked execution remains the safe boundary default.
+The original object is unchanged. TypeScript knows that `age` is now an optional number,
+`firstName` exists, and `passwordHash` is gone.
 
 ## Model
 
-A spell is an immutable repair plan. Its output type evolves as fields are renamed, coerced,
-created, moved, and removed. Build it once, then run it anywhere the same boundary shape appears.
+A spell is an immutable transformation plan. Each operation updates the inferred output type, so
+the type follows the data from its wire shape to its application shape.
 
-Checked execution is the default. Trusted execution and auditable generated mappers are explicit
-opt-ins for inputs whose shape is already established.
+Use `spell<T>()` when a plan will be reused. Use `wand(value)` for a one-off change:
+
+```ts
+import { wand } from 'wandofmagic';
+
+const user = wand({ name: '  Ada  ' })
+  .trim(['name'])
+  .value();
+
+// { name: 'Ada' }
+```
+
+## Operations
+
+- Clean values with `trim`, `coerce`, `default`, and `transform`.
+- Reshape records with `rename`, `set`, `copy`, `move`, and `derive`.
+- Limit output with `omit` and `pick`.
+- Apply one reusable spell to an array with `collection`.
+
+Use a field name for top-level data or a tuple such as `['profile', 'name']` for a deep path.
+Paths are type-checked and limited to eight segments.
+
+## Failures
+
+`safeRun()` returns `{ ok: true, value, changes }` or `{ ok: false, issues, changes }`.
+`run()` returns the value directly and throws `WandError` on failure. Issues contain stable codes
+and paths; change records describe what happened without containing field values.
+
+Checked execution is the default and is designed for untrusted boundary data. Trusted execution
+and generated mappers are advanced performance options for inputs your code already controls.
+
+## Learn
+
+- [Usage guide](./USAGE.md) — start here for paths, missing fields, collections, and custom coercers.
+- [API reference](./API.md) — operations, options, results, errors, and exported types.
+- [Security policy](./SECURITY.md) — reporting and the checked/trusted input contracts.
 
 ## License
 
-[MIT](LICENSE)
+[MIT](./LICENSE)

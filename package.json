@@ -61,9 +61,12 @@
   },
   "files": [
     "dist",
+    "API.md",
     "LICENSE",
     "magicwand-logo.svg",
-    "README.md"
+    "README.md",
+    "SECURITY.md",
+    "USAGE.md"
   ],
   "packageManager": "npm@10.9.8",
   "engines": {

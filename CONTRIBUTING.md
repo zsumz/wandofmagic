@@ -31,6 +31,8 @@ A good pull request:
 - passes `npm run check`
 
 Public API changes without documentation and type tests are incomplete.
+Keep the examples in `README.md` and `USAGE.md` represented in
+`test/types/api/public-api/documentation.ts` so they stay valid as the API evolves.
 
 ## Release notes
 
