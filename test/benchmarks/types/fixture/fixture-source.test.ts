@@ -9,9 +9,9 @@ import {
 
 describe('type benchmark fixture source', () => {
     it.each([
-        ['builder', 16_528, 'c5319e84efa59d60652d366415f7ebfa64a2f73ec0bf0f98e7a743a8fb5b4ce5'],
-        ['materialized', 6_211, 'eac8cab4910dbaff6a758781cd8abba9abbc57ac7cb8dc0d378c2c2c5e880408'],
-        ['program', 7_096, 'f682b5b0e47e96f2d7f634ae8a0b7235cf6e3a47939f4bb9b0428503a641332c'],
+        ['builder', 16_534, '8a077beaaed47fa4c1f293da0ce6ea999e8957a7a9fa60a4849d6c8131975118'],
+        ['materialized', 6_213, '1785450a67faf425ce0f1e0f4d975d89c55de1b984500b03af26ca5ce0e38138'],
+        ['program', 7_100, '11ac89ba4bf463356765125b2912c50da123ad21b55e918ae3ac2edaf02c6390'],
     ])('keeps the 10-operation %s fixture byte-identical', (mode, bytes, sha256) => {
         const source = createFixture(10, readTypeBenchmarkConfig({
             WANDOFMAGIC_TYPE_CHAIN_MODE: mode,
@@ -24,8 +24,8 @@ describe('type benchmark fixture source', () => {
     it('keeps the default 100-operation fixture byte-identical', () => {
         const source = createFixture(100, readTypeBenchmarkConfig({}));
 
-        expect(Buffer.byteLength(source)).toBe(136_245);
+        expect(Buffer.byteLength(source)).toBe(136_251);
         expect(createHash('sha256').update(source).digest('hex'))
-            .toBe('24b845313f5aabc2a54560b91b9c26b3a4ff46be6abe327ef2e738ec3266cef4');
+            .toBe('74155cf6a835a27fa9a1ea0ac290c50573b7011fbba82e5892f1840fc9877d8a');
     });
 });

@@ -32,6 +32,9 @@ jobs:
       - name: Install dependencies
         run: npm ci --ignore-scripts --no-audit
 
+      - name: Build
+        run: npm run build
+
       - name: Lint
         if: matrix.node-version == '24'
         run: npm run lint
@@ -91,4 +94,4 @@ jobs:
         run: npm install --no-save --package-lock=false --ignore-scripts --no-audit typescript@5.8.3
 
       - name: Typecheck public API fixtures
-        run: tsc -p tsconfig.types.json
+        run: npm exec -- tsc -p tsconfig.types.json
