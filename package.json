@@ -118,10 +118,10 @@
     "eslint": "^10.6.0",
     "eslint-config-rubric": "^0.1.0-alpha.0",
     "fast-check": "4.9.0",
-    "publint": "0.3.22",
+    "publint": "0.3.24",
     "smoque": "^0.1.0-alpha.1",
-    "tsdown": "^0.12.9",
-    "typescript": "^5.8.3",
+    "tsdown": "^0.22.14",
+    "typescript": "^7.0.2",
     "vitest": "^4.1.10"
   }
 }
